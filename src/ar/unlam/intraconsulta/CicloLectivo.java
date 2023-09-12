@@ -1,15 +1,18 @@
 package ar.unlam.intraconsulta;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class CicloLectivo {
 
 	private Integer anio;
 	private Cuatrimestres cuatrimestre;
+	private ArrayList<Comision> listaComisiones;
 
 	public CicloLectivo(Integer anio, Cuatrimestres cuatrimestre, Date fechaInicio) {
 		this.anio = anio;
 		this.cuatrimestre = cuatrimestre;
+		this.listaComisiones = new ArrayList<Comision>();
 	}
 
 	public Integer getAnio() {
@@ -18,6 +21,31 @@ public class CicloLectivo {
 
 	public Cuatrimestres getCuatrimestre() {
 		return cuatrimestre;
+	}
+	
+	public Comision buscarComisionEnLista(Comision comisionBuscada) {
+		Comision comisionEncontrada = null;
+		
+		for (Comision comision : listaComisiones) {
+			if(comision.equals(comisionBuscada)) {
+				comisionEncontrada = comision;
+				break;
+			}
+		}
+		
+		return comisionEncontrada;
+	}
+	
+	public void agregarComision(Comision comision) {
+		Comision comisionBuscada = buscarComisionEnLista(comision);
+		
+		if(comisionBuscada == null) {
+			listaComisiones.add(comision);
+		}
+	}
+
+	public ArrayList<Comision> getListaComisiones() {
+		return listaComisiones;
 	}
 
 	@Override
