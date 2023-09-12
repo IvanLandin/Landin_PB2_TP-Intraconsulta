@@ -6,14 +6,12 @@ public class Comision {
 
 	private Integer codigoMateria;
 	private Integer numeroComision;
-	private CicloLectivo cicloLectivo;
 	private ArrayList<DiaCurso> diasCursada;
 	private Aula aula;
 
-	public Comision(Integer codigoMateria, Integer numeroComision, CicloLectivo cicloLectivo) {
+	public Comision(Integer codigoMateria, Integer numeroComision) {
 		this.codigoMateria = codigoMateria;
 		this.numeroComision = numeroComision;
-		this.cicloLectivo = cicloLectivo;
 		this.diasCursada = new ArrayList<DiaCurso>();
 		this.aula = null;
 	}
@@ -28,10 +26,6 @@ public class Comision {
 
 	public Integer getNumeroComision() {
 		return numeroComision;
-	}
-
-	public CicloLectivo getCicloLectivo() {
-		return cicloLectivo;
 	}
 
 	public ArrayList<DiaCurso> getDiasCursada() {

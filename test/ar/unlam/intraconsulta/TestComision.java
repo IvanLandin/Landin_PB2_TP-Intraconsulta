@@ -11,15 +11,18 @@ public class TestComision {
 		Materia materia = new Materia(2625, "Base de Datos 1");
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
 		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
-		Comision comision = new Comision(materia.getCodigoMateria(), 2363, cl);
-		DiaCurso dc1 = new DiaCurso(DiasSemana.MARTES.toString(), 8);
-		comision.setDiaCursada(dc1);
 		
+		Comision comision = new Comision(materia.getCodigoMateria(), 2363);
+		DiaCurso dc1 = new DiaCurso(DiasSemana.MARTES.toString(), 8);
+		
+		comision.setDiaCursada(dc1);
+		cl.agregarComision(comision);
 		materia.agregarComision(comision);
 
 		assertNotNull(comision);
 		assertEquals(1, comision.getDiasCursada().size());
 		assertEquals(1, materia.getListaComisiones().size());
+		assertEquals(1, cl.getListaComisiones().size());
 	}
 	
 	@Test
@@ -27,43 +30,49 @@ public class TestComision {
 		Materia materia = new Materia(2625, "Base de Datos 1");
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
 		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
-		Comision comision = new Comision(materia.getCodigoMateria(), 2363, cl);
+		
+		Comision comision = new Comision(materia.getCodigoMateria(), 2363);
 		DiaCurso dc1 = new DiaCurso(DiasSemana.MARTES.toString(), 8);
 		DiaCurso dc2 = new DiaCurso(DiasSemana.SABADO.toString(), 8);
+		
 		comision.setDiaCursada(dc1);
 		comision.setDiaCursada(dc2);
-		
+		cl.agregarComision(comision);
 		materia.agregarComision(comision);
 		
 		assertNotNull(comision);
 		assertEquals(2, comision.getDiasCursada().size());
 		assertEquals(1, materia.getListaComisiones().size());
+		assertEquals(1, cl.getListaComisiones().size());
 	}
 	
 	@Test
 	public void queSePuedaAgregarDosComisionesAUnaMateria() {
 		Materia materia = new Materia(2625, "Base de Datos 1");
-		
-		//comision1
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
 		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
-		Comision comision1 = new Comision(materia.getCodigoMateria(), 2362, cl);
+		
+		//comision1
+		Comision comision1 = new Comision(materia.getCodigoMateria(), 2362);
 		DiaCurso dc1 = new DiaCurso(DiasSemana.MARTES.toString(), 8);
 		DiaCurso dc2 = new DiaCurso(DiasSemana.SABADO.toString(), 8);
 		comision1.setDiaCursada(dc1);
 		comision1.setDiaCursada(dc2);
 		
 		//comision2
-		Comision comision2 = new Comision(materia.getCodigoMateria(), 2363, cl);
+		Comision comision2 = new Comision(materia.getCodigoMateria(), 2363);
 		dc1 = new DiaCurso(DiasSemana.LUNES.toString(), 8);
 		dc2 = new DiaCurso(DiasSemana.VIERNES.toString(), 8);
 		comision1.setDiaCursada(dc1);
 		comision1.setDiaCursada(dc2);
 		
+		cl.agregarComision(comision1);
+		cl.agregarComision(comision2);
 		materia.agregarComision(comision1);
 		materia.agregarComision(comision2);
 
 		assertEquals(2, materia.getListaComisiones().size());
+		assertEquals(2, cl.getListaComisiones().size());
 	}
 
 	@Test
@@ -71,16 +80,19 @@ public class TestComision {
 		Materia materia = new Materia(2625, "Base de Datos 1");
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
 		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
-		Comision comision1 = new Comision(materia.getCodigoMateria(), 2362, cl);
+		
+		Comision comision1 = new Comision(materia.getCodigoMateria(), 2362);
 		DiaCurso dc1 = new DiaCurso(DiasSemana.MARTES.toString(), 8);
 		DiaCurso dc2 = new DiaCurso(DiasSemana.SABADO.toString(), 8);
+		
 		comision1.setDiaCursada(dc1);
 		comision1.setDiaCursada(dc2);
-		
+		cl.agregarComision(comision1);
 		materia.agregarComision(comision1);
 		materia.agregarComision(comision1);
 
 		assertEquals(1, materia.getListaComisiones().size());
+		assertEquals(1, cl.getListaComisiones().size());
 	}
 	
 	@Test
@@ -88,10 +100,13 @@ public class TestComision {
 		Integer numeroAula = 140;
 		Materia materia = new Materia(2625, "Base de Datos 1");
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
-		Comision comision = new Comision(materia.getCodigoMateria(), 2363, new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio));
+		CicloLectivo cl =  new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
+		
+		Comision comision = new Comision(materia.getCodigoMateria(), 2363);
+		
 		comision.setDiaCursada(new DiaCurso(DiasSemana.MARTES.toString(), 8));
 		comision.setDiaCursada(new DiaCurso(DiasSemana.SABADO.toString(), 8));
-		
+		cl.agregarComision(comision);
 		materia.agregarComision(comision);
 		
 		Comision comisionBuscada = materia.buscarComisionPorNumero(2363);
@@ -101,6 +116,7 @@ public class TestComision {
 		assertEquals(1, materia.getListaComisiones().size());
 		assertNotNull(comision.getAula());
 		assertEquals(numeroAula, comision.getAula().getNumeroAula());
+		assertEquals(1, cl.getListaComisiones().size());
 	}
 	
 }

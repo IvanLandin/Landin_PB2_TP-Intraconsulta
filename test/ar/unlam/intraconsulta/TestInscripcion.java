@@ -11,9 +11,12 @@ public class TestInscripcion {
 		Integer legajo = 175498;
 		Integer numComi = 3300;
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
-		Comision comision = new Comision(2623, 3300, new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio));
+		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
+		Comision comision = new Comision(2623, 3300);
 		Alumno alumno = new Alumno(175498, "Ivan", "Landin", 40193158);
 		Inscripcion inscripcion = new Inscripcion(comision, alumno);
+		
+		cl.agregarComision(comision);
 		
 		assertNotNull(inscripcion);
 		assertEquals(legajo, inscripcion.getAlumno().getLegajo());
@@ -24,9 +27,12 @@ public class TestInscripcion {
 	public void queSePuedaCalificarAUnAlumno() {
 		Integer calificacion = 8;
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
-		Comision comision = new Comision(2623, 3300, new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio));
+		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
+		Comision comision = new Comision(2623, 3300);
 		Alumno alumno = new Alumno(175498, "Ivan", "Landin", 40193158);
 		Inscripcion inscripcion = new Inscripcion(comision, alumno);
+		
+		cl.agregarComision(comision);
 		
 		assertTrue(inscripcion.calificar(calificacion));
 		assertEquals(calificacion, inscripcion.getNota().getPrimerParcial());
@@ -37,9 +43,12 @@ public class TestInscripcion {
 		Integer primerParcial = 8;
 		Integer segundoParcial = 7;
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
-		Comision comision = new Comision(2623, 3300, new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio));
+		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
+		Comision comision = new Comision(2623, 3300);
 		Alumno alumno = new Alumno(175498, "Ivan", "Landin", 40193158);
 		Inscripcion inscripcion = new Inscripcion(comision, alumno);
+		
+		cl.agregarComision(comision);
 		
 		assertTrue(inscripcion.calificar(primerParcial));
 		assertTrue(inscripcion.calificar(segundoParcial));
@@ -53,9 +62,12 @@ public class TestInscripcion {
 		Integer segundoParcial = 4;
 		Integer recuperatorio = 7;
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
-		Comision comision = new Comision(2623, 3300, new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio));
+		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
+		Comision comision = new Comision(2623, 3300);
 		Alumno alumno = new Alumno(175498, "Ivan", "Landin", 40193158);
 		Inscripcion inscripcion = new Inscripcion(comision, alumno);
+		
+		cl.agregarComision(comision);
 		
 		assertTrue(inscripcion.calificar(primerParcial));
 		assertTrue(inscripcion.calificar(segundoParcial));
@@ -73,9 +85,12 @@ public class TestInscripcion {
 		Integer recuperatorio = 4;
 		Integer recuperatorioNoValido = 7;
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
-		Comision comision = new Comision(2623, 3300, new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio));
+		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
+		Comision comision = new Comision(2623, 3300);
 		Alumno alumno = new Alumno(175498, "Ivan", "Landin", 40193158);
 		Inscripcion inscripcion = new Inscripcion(comision, alumno);
+		
+		cl.agregarComision(comision);
 		
 		assertTrue(inscripcion.calificar(primerParcial));
 		assertTrue(inscripcion.calificar(segundoParcial));
@@ -93,9 +108,12 @@ public class TestInscripcion {
 		Integer primerParcial = 5;
 		Integer segundoParcial = 4;
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
-		Comision comision = new Comision(2623, 3300, new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio));
+		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
+		Comision comision = new Comision(2623, 3300);
 		Alumno alumno = new Alumno(175498, "Ivan", "Landin", 40193158);
 		Inscripcion inscripcion = new Inscripcion(comision, alumno);
+		
+		cl.agregarComision(comision);
 		
 		assertTrue(inscripcion.calificar(primerParcial));
 		assertTrue(inscripcion.calificar(segundoParcial));
@@ -114,9 +132,12 @@ public class TestInscripcion {
 		Integer recuperatorio = 7;
 		Integer notaNoValida = 10;
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
-		Comision comision = new Comision(2623, 3300, new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio));
+		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
+		Comision comision = new Comision(2623, 3300);
 		Alumno alumno = new Alumno(175498, "Ivan", "Landin", 40193158);
 		Inscripcion inscripcion = new Inscripcion(comision, alumno);
+		
+		cl.agregarComision(comision);
 		
 		assertTrue(inscripcion.calificar(primerParcial));
 		assertTrue(inscripcion.calificar(segundoParcial));
@@ -134,9 +155,12 @@ public class TestInscripcion {
 		Integer recuperatorio = 0;
 		Integer notaNoValida = 11;
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
-		Comision comision = new Comision(2623, 3300, new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio));
+		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
+		Comision comision = new Comision(2623, 3300);
 		Alumno alumno = new Alumno(175498, "Ivan", "Landin", 40193158);
 		Inscripcion inscripcion = new Inscripcion(comision, alumno);
+		
+		cl.agregarComision(comision);
 		
 		assertTrue(inscripcion.calificar(primerParcial));
 		assertTrue(inscripcion.calificar(segundoParcial));
