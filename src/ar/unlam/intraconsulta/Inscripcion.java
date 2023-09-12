@@ -2,6 +2,7 @@ package ar.unlam.intraconsulta;
 
 public class Inscripcion {
 	
+	private Integer idInscripcion;
 	private Comision comision;
 	private Alumno alumno;
 	private Nota nota;

@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class Comision {
 
-	private Integer codigoMateria;
+	private Materia materia;
 	private Integer numeroComision;
 	private ArrayList<DiaCurso> diasCursada;
 	private Aula aula;
 
-	public Comision(Integer codigoMateria, Integer numeroComision) {
-		this.codigoMateria = codigoMateria;
+	public Comision(Materia materia, Integer numeroComision) {
+		this.materia = materia;
 		this.numeroComision = numeroComision;
 		this.diasCursada = new ArrayList<DiaCurso>();
 		this.aula = null;
@@ -20,8 +20,8 @@ public class Comision {
 		diasCursada.add(diaCursada);
 	}
 
-	public Integer getCodigoMateria() {
-		return codigoMateria;
+	public Materia getMateriaComision() {
+		return materia;
 	}
 
 	public Integer getNumeroComision() {
@@ -42,12 +42,12 @@ public class Comision {
 
 	@Override
 	public String toString() {
-		return codigoMateria + " - Com: " + numeroComision;
+		return materia + " - Com: " + numeroComision;
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		return this.codigoMateria.equals(((Comision)obj).getCodigoMateria()) && this.numeroComision.equals(((Comision)obj).getNumeroComision());
+		return this.materia.equals(((Comision)obj).getMateriaComision()) && this.numeroComision.equals(((Comision)obj).getNumeroComision());
 	}
 	
 	@Override

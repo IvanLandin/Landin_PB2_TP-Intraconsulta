@@ -12,7 +12,8 @@ public class TestInscripcion {
 		Integer numComi = 3300;
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
 		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
-		Comision comision = new Comision(2623, 3300);
+		Materia materia = new Materia(2623, "PB2");
+		Comision comision = new Comision(materia, 3300);
 		Alumno alumno = new Alumno(175498, "Ivan", "Landin", 40193158);
 		Inscripcion inscripcion = new Inscripcion(comision, alumno);
 		
@@ -28,7 +29,8 @@ public class TestInscripcion {
 		Integer calificacion = 8;
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
 		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
-		Comision comision = new Comision(2623, 3300);
+		Materia materia = new Materia(2623, "PB2");
+		Comision comision = new Comision(materia, 3300);
 		Alumno alumno = new Alumno(175498, "Ivan", "Landin", 40193158);
 		Inscripcion inscripcion = new Inscripcion(comision, alumno);
 		
@@ -44,7 +46,8 @@ public class TestInscripcion {
 		Integer segundoParcial = 7;
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
 		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
-		Comision comision = new Comision(2623, 3300);
+		Materia materia = new Materia(2623, "PB2");
+		Comision comision = new Comision(materia, 3300);
 		Alumno alumno = new Alumno(175498, "Ivan", "Landin", 40193158);
 		Inscripcion inscripcion = new Inscripcion(comision, alumno);
 		
@@ -63,7 +66,8 @@ public class TestInscripcion {
 		Integer recuperatorio = 7;
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
 		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
-		Comision comision = new Comision(2623, 3300);
+		Materia materia = new Materia(2623, "PB2");
+		Comision comision = new Comision(materia, 3300);
 		Alumno alumno = new Alumno(175498, "Ivan", "Landin", 40193158);
 		Inscripcion inscripcion = new Inscripcion(comision, alumno);
 		
@@ -86,7 +90,8 @@ public class TestInscripcion {
 		Integer recuperatorioNoValido = 7;
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
 		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
-		Comision comision = new Comision(2623, 3300);
+		Materia materia = new Materia(2623, "PB2");
+		Comision comision = new Comision(materia, 3300);
 		Alumno alumno = new Alumno(175498, "Ivan", "Landin", 40193158);
 		Inscripcion inscripcion = new Inscripcion(comision, alumno);
 		
@@ -109,7 +114,8 @@ public class TestInscripcion {
 		Integer segundoParcial = 4;
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
 		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
-		Comision comision = new Comision(2623, 3300);
+		Materia materia = new Materia(2623, "PB2");
+		Comision comision = new Comision(materia, 3300);
 		Alumno alumno = new Alumno(175498, "Ivan", "Landin", 40193158);
 		Inscripcion inscripcion = new Inscripcion(comision, alumno);
 		
@@ -133,7 +139,8 @@ public class TestInscripcion {
 		Integer notaNoValida = 10;
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
 		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
-		Comision comision = new Comision(2623, 3300);
+		Materia materia = new Materia(2623, "PB2");
+		Comision comision = new Comision(materia, 3300);
 		Alumno alumno = new Alumno(175498, "Ivan", "Landin", 40193158);
 		Inscripcion inscripcion = new Inscripcion(comision, alumno);
 		
@@ -156,7 +163,8 @@ public class TestInscripcion {
 		Integer notaNoValida = 11;
 		Date fechaInicio = new GregorianCalendar(2023, Calendar.AUGUST, 14).getTime();
 		CicloLectivo cl = new CicloLectivo(2023, Cuatrimestres.SEGUNDO, fechaInicio);
-		Comision comision = new Comision(2623, 3300);
+		Materia materia = new Materia(2623, "PB2");
+		Comision comision = new Comision(materia, 3300);
 		Alumno alumno = new Alumno(175498, "Ivan", "Landin", 40193158);
 		Inscripcion inscripcion = new Inscripcion(comision, alumno);
 		

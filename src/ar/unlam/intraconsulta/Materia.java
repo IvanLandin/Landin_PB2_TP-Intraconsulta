@@ -7,20 +7,20 @@ public class Materia {
 	private Integer codigoMateria;
 	private String nombreMateria;
 	private ArrayList<Integer> listaCorrelativas;
-	private ArrayList<Comision> listaComisiones;
+	//private ArrayList<Comision> listaComisiones;
 
 	public Materia(Integer codigoMateria, String nombreMateria, ArrayList<Integer> listaCorrelativas) {
 		this.codigoMateria = codigoMateria;
 		this.nombreMateria = nombreMateria;
 		this.listaCorrelativas = listaCorrelativas;
-		this.listaComisiones = new ArrayList<Comision>();
+		//this.listaComisiones = new ArrayList<Comision>();
 	}
 
 	public Materia(Integer codigoMateria, String nombreMateria) {
 		this.codigoMateria = codigoMateria;
 		this.nombreMateria = nombreMateria;
 		this.listaCorrelativas = new ArrayList<Integer>();
-		this.listaComisiones = new ArrayList<Comision>();
+		//this.listaComisiones = new ArrayList<Comision>();
 	}
 
 	public String getNombreMateria() {
@@ -43,33 +43,33 @@ public class Materia {
 		return codigoMateria;
 	}
 	
-	public ArrayList<Comision> getListaComisiones() {
-		return listaComisiones;
-	}
+//	public ArrayList<Comision> getListaComisiones() {
+//		return listaComisiones;
+//	}
 	
-	public Boolean agregarComision(Comision nuevaComision) {
-		Boolean pudoAgregarComision = false;
-		
-		if(buscarComisionPorNumero(nuevaComision.getNumeroComision()) == null) {
-			listaComisiones.add(nuevaComision);
-			pudoAgregarComision = true;
-		}
-		
-		return pudoAgregarComision;
-	}
-	
-	public Comision buscarComisionPorNumero(Integer numeroComisionBuscada) {
-		Comision comisionBuscada = null;
-		
-		for (int i = 0; i < this.listaComisiones.size(); i++) {
-			if(this.listaComisiones.get(i).getNumeroComision().equals(numeroComisionBuscada)) {
-				comisionBuscada = this.listaComisiones.get(i);
-				break;
-			}
-		}
-		
-		return comisionBuscada;
-	}
+//	public Boolean agregarComision(Comision nuevaComision) {
+//		Boolean pudoAgregarComision = false;
+//		
+//		if(buscarComisionPorNumero(nuevaComision.getNumeroComision()) == null) {
+//			listaComisiones.add(nuevaComision);
+//			pudoAgregarComision = true;
+//		}
+//		
+//		return pudoAgregarComision;
+//	}
+//	
+//	public Comision buscarComisionPorNumero(Integer numeroComisionBuscada) {
+//		Comision comisionBuscada = null;
+//		
+//		for (int i = 0; i < this.listaComisiones.size(); i++) {
+//			if(this.listaComisiones.get(i).getNumeroComision().equals(numeroComisionBuscada)) {
+//				comisionBuscada = this.listaComisiones.get(i);
+//				break;
+//			}
+//		}
+//		
+//		return comisionBuscada;
+//	}
 
 	@Override
 	public String toString() {
