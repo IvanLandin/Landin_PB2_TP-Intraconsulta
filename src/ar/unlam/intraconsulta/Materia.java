@@ -6,7 +6,7 @@ public class Materia {
 
 	private Integer codigoMateria;
 	private String nombreMateria;
-	private ArrayList<Integer> listaCorrelativas;
+	private ArrayList<Integer> listaCorrelativas;//cambiar a ArrayList<Materia>
 	//private ArrayList<Comision> listaComisiones;
 
 	public Materia(Integer codigoMateria, String nombreMateria, ArrayList<Integer> listaCorrelativas) {

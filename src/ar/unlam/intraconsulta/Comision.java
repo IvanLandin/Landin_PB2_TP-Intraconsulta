@@ -8,6 +8,9 @@ public class Comision {
 	private Integer numeroComision;
 	private ArrayList<DiaCurso> diasCursada;
 	private Aula aula;
+	//agregar CicloLectivo
+	//agregar arraylist inscripcion
+	//agregar arraylist profecomision(profe y curso)
 
 	public Comision(Materia materia, Integer numeroComision) {
 		this.materia = materia;

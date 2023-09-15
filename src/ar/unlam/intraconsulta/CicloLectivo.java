@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class CicloLectivo {
 
+	//usar LocalDate, Date, Calendar o GregorianCalendar
 	private Integer anio;
 	private Cuatrimestres cuatrimestre;
 	private ArrayList<Comision> listaComisiones;
