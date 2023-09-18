@@ -4,23 +4,38 @@ import java.util.ArrayList;
 
 public class Comision {
 
-	private Materia materia;
+	private Integer id;
 	private Integer numeroComision;
+	private Materia materia;
 	private ArrayList<DiaCurso> diasCursada;
 	private Aula aula;
-	//agregar CicloLectivo
-	//agregar arraylist inscripcion
-	//agregar arraylist profecomision(profe y curso)
+	private CicloLectivo cicloLectivo;
 
-	public Comision(Materia materia, Integer numeroComision) {
+	public Comision(Integer id, Materia materia, Integer numeroComision, CicloLectivo cicloLectivo, DiaCurso dc1) {
+		this.id = id;
 		this.materia = materia;
 		this.numeroComision = numeroComision;
-		this.diasCursada = new ArrayList<DiaCurso>();
+		this.cicloLectivo = cicloLectivo;
 		this.aula = null;
+		
+		this.diasCursada = new ArrayList<DiaCurso>();
+		this.diasCursada.add(dc1);
+	}
+	
+	public Comision(Integer id, Materia materia, Integer numeroComision, CicloLectivo cicloLectivo, DiaCurso dc1, DiaCurso dc2) {
+		this.id = id;
+		this.materia = materia;
+		this.numeroComision = numeroComision;
+		this.cicloLectivo = cicloLectivo;
+		this.aula = null;
+		
+		this.diasCursada = new ArrayList<DiaCurso>();
+		this.diasCursada.add(dc1);
+		this.diasCursada.add(dc2);
 	}
 
-	public void setDiaCursada(DiaCurso diaCursada) {
-		diasCursada.add(diaCursada);
+	public Integer getId() {
+		return id;
 	}
 
 	public Materia getMateriaComision() {
@@ -35,6 +50,10 @@ public class Comision {
 		return diasCursada;
 	}
 	
+	public CicloLectivo getCicloLectivo() {
+		return cicloLectivo;
+	}
+
 	public void setAula(Aula aula) {
 		this.aula = aula;
 	}
@@ -45,20 +64,17 @@ public class Comision {
 
 	@Override
 	public String toString() {
-		return materia + " - Com: " + numeroComision;
+		return materia.getCodigoMateria() + " - Com: " + numeroComision;
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		return this.materia.equals(((Comision)obj).getMateriaComision()) && this.numeroComision.equals(((Comision)obj).getNumeroComision());
+		return this.id.equals(((Comision)obj).getId());
 	}
 	
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
-		return super.hashCode();
+		return id;
 	}
-
-	
 
 }

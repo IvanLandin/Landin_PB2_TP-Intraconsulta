@@ -2,30 +2,23 @@ package ar.unlam.intraconsulta;
 
 public class Inscripcion {
 	
-//	private Integer idInscripcion;
+	private Integer idInscripcion;
 	private Comision comision;
 	private Alumno alumno;
 	private Nota nota;
 	private Boolean aprobada;
-
-	public Inscripcion(Comision comision, Alumno alumno) {
+	
+	public Inscripcion(Integer idInscripcion, Comision comision, Alumno alumno) {
+		this.idInscripcion = idInscripcion;
 		this.comision = comision;
 		this.alumno = alumno;
 		this.nota = new Nota();
 		this.aprobada = false;
 	}
-	
-//	public Inscripcion(Integer idInscripcion, Comision comision, Alumno alumno) {
-//		this.idInscripcion = idInscripcion;
-//		this.comision = comision;
-//		this.alumno = alumno;
-//		this.nota = new Nota();
-//		this.aprobada = false;
-//	}
 
-//	public Integer getIdInscripcion() {
-//		return idInscripcion;
-//	}
+	public Integer getIdInscripcion() {
+		return idInscripcion;
+	}
 	
 	public Boolean getAprobada() {
 		return aprobada;
@@ -77,18 +70,12 @@ public class Inscripcion {
 	
 	@Override
 	public boolean equals(Object obj) {
-		return this.alumno.equals(((Inscripcion)obj).getAlumno()) && this.comision.equals(((Inscripcion)obj).getComision());
+		return this.idInscripcion.equals(((Inscripcion)obj).getIdInscripcion());
 	}
-	
-//	@Override
-//	public boolean equals(Object obj) {
-//		return this.idInscripcion.equals(((Inscripcion)obj).getIdInscripcion());
-//	}
 	
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
-		return super.hashCode();
+		return idInscripcion;
 	}
 
 }

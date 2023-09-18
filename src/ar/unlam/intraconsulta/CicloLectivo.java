@@ -1,67 +1,55 @@
 package ar.unlam.intraconsulta;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class CicloLectivo {
 
-	//usar LocalDate, Date, Calendar o GregorianCalendar
-	private Integer anio;
-	private Cuatrimestres cuatrimestre;
-	private ArrayList<Comision> listaComisiones;
+	private Integer idCicloLectivo;
+	private LocalDate fechaInicio;
+	private LocalDate fechaFinalizacion;
+	private LocalDate fechaInicioInscripcion;
+	private LocalDate fechaFinalizacionInscripcion;
 
-	public CicloLectivo(Integer anio, Cuatrimestres cuatrimestre, Date fechaInicio) {
-		this.anio = anio;
-		this.cuatrimestre = cuatrimestre;
-		this.listaComisiones = new ArrayList<Comision>();
-	}
-
-	public Integer getAnio() {
-		return anio;
-	}
-
-	public Cuatrimestres getCuatrimestre() {
-		return cuatrimestre;
+	public CicloLectivo(Integer idCicloLectivo, LocalDate fechaInicio, LocalDate fechaFinalizacion, LocalDate fechaInicioInscripcion, LocalDate fechaFinalizacionInscripcion) {
+		this.idCicloLectivo = idCicloLectivo;
+		this.fechaInicio = fechaInicio;
+		this.fechaFinalizacion = fechaFinalizacion;
+		this.fechaInicioInscripcion = fechaInicioInscripcion;
+		this.fechaFinalizacionInscripcion = fechaFinalizacionInscripcion;
 	}
 	
-	public Comision buscarComisionEnLista(Comision comisionBuscada) {
-		Comision comisionEncontrada = null;
-		
-		for (Comision comision : listaComisiones) {
-			if(comision.equals(comisionBuscada)) {
-				comisionEncontrada = comision;
-				break;
-			}
-		}
-		
-		return comisionEncontrada;
+	public Integer getIdCicloLectivo() {
+		return idCicloLectivo;
 	}
 	
-	public void agregarComision(Comision comision) {
-		Comision comisionBuscada = buscarComisionEnLista(comision);
-		
-		if(comisionBuscada == null) {
-			listaComisiones.add(comision);
-		}
+	public LocalDate getFechaInicio() {
+		return fechaInicio;
 	}
 
-	public ArrayList<Comision> getListaComisiones() {
-		return listaComisiones;
+	public LocalDate getFechaFinalizacion() {
+		return fechaFinalizacion;
+	}
+
+	public LocalDate getFechaInicioInscripcion() {
+		return fechaInicioInscripcion;
+	}
+
+	public LocalDate getFechaFinalizacionInscripcion() {
+		return fechaFinalizacionInscripcion;
 	}
 
 	@Override
 	public String toString() {
-		return "Anio: " + anio + ". Cuatrimestre: " + cuatrimestre;
+		return "Inicio del ciclo lectivo: " + fechaInicio + ". Finalizacion del ciclo lectivo: " + fechaFinalizacion;
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		return this.anio.equals(((CicloLectivo)obj).getAnio()) && this.cuatrimestre.equals(((CicloLectivo)obj).getCuatrimestre());
+		return this.idCicloLectivo.equals(((CicloLectivo)obj).getIdCicloLectivo());
 	}
 	
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
-		return super.hashCode();
+		return idCicloLectivo;
 	}
 }

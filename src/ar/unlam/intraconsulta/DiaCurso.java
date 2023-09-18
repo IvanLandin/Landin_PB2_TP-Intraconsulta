@@ -2,38 +2,30 @@ package ar.unlam.intraconsulta;
 
 public class DiaCurso {
 
-	private String dia;
-	private Integer hora;
-
-	public DiaCurso(String dia, Integer hora) {
+	private DiasSemana dia;
+	private Turnos turno;
+	
+	public DiaCurso(DiasSemana dia, Turnos turno) {
 		this.dia = dia;
-		this.hora = hora;
+		this.turno = turno;
 	}
-
-	public String getDia() {
+	
+	public DiasSemana getDia() {
 		return dia;
 	}
 
-	public void setDia(String dia) {
-		this.dia = dia;
+	public Turnos getTurno() {
+		return turno;
 	}
 
-	public Integer getHora() {
-		return hora;
-	}
-
-	public void setHora(Integer hora) {
-		this.hora = hora;
-	}
-	
 	@Override
 	public String toString() {
-		return dia + ". " + hora + "/" + (hora + 4) + " HS";
+		return dia.toString() + ", TURNO " + turno.toString();
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		return this.dia.equals(((DiaCurso)obj).getDia()) && this.hora.equals(((DiaCurso)obj).getHora());
+		return this.dia.equals(((DiaCurso)obj).getDia()) && this.turno.equals(((DiaCurso)obj).getTurno());
 	}
 
 	@Override

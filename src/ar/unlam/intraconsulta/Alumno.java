@@ -1,17 +1,23 @@
 package ar.unlam.intraconsulta;
 
+import java.time.LocalDate;
+
 public class Alumno {
 
 	private Integer legajo;
 	private String nombre;
 	private String apellido;
 	private Integer dni;
+	private LocalDate fechaNacimiento;
+	private LocalDate fechaIngreso;
 
-	public Alumno(Integer legajo, String nombre, String apellido, Integer dni) {
+	public Alumno(Integer legajo, String nombre, String apellido, Integer dni, LocalDate fechaNacimiento, LocalDate fechaIngreso) {
 		this.legajo = legajo;
 		this.nombre = nombre;
 		this.apellido = apellido;
+		this.fechaNacimiento = fechaNacimiento;
 		this.dni = dni;
+		this.fechaIngreso = fechaIngreso;
 	}
 
 	public String getNombre() {
@@ -34,8 +40,16 @@ public class Alumno {
 		return legajo;
 	}
 
+	public LocalDate getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
 	public Integer getDni() {
 		return dni;
+	}
+
+	public LocalDate getFechaIngreso() {
+		return fechaIngreso;
 	}
 
 	@Override
@@ -50,7 +64,6 @@ public class Alumno {
 	
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
-		return super.hashCode();
+		return legajo;
 	}
 }
