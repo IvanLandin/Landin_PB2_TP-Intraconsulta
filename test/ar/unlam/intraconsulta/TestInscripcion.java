@@ -20,8 +20,8 @@ public class TestInscripcion {
 		LocalDate fechaInicio = LocalDate.of(2023, 8, 14), fechaFinalizacion = LocalDate.of(2023, 12, 2), 
 				inicioInscripcion = LocalDate.of(2023, 7, 31), finalInscripcion = LocalDate.of(2023, 8, 10);
 		CicloLectivo cicloLectivo = new CicloLectivo(1, fechaInicio, fechaFinalizacion, inicioInscripcion, finalInscripcion);
-		Materia materia = new Materia(2623, "PB2");
-		Comision comision = new Comision(1, materia, 3300, cicloLectivo, new DiaCurso(DiasSemana.MARTES, Turnos.MANIANA));
+		Materia materia = new Materia(1, 2623, "PB2");
+		Comision comision = new Comision(1, materia, 3300, cicloLectivo, Turnos.MANIANA);
 		
 		//inscripcion
 		Inscripcion inscripcion = new Inscripcion(1, comision, alumno);
@@ -42,8 +42,8 @@ public class TestInscripcion {
 		LocalDate fechaInicio = LocalDate.of(2023, 8, 14), fechaFinalizacion = LocalDate.of(2023, 12, 2), 
 				inicioInscripcion = LocalDate.of(2023, 7, 31), finalInscripcion = LocalDate.of(2023, 8, 10);
 		CicloLectivo cicloLectivo = new CicloLectivo(1, fechaInicio, fechaFinalizacion, inicioInscripcion, finalInscripcion);
-		Materia materia = new Materia(2623, "PB2");
-		Comision comision = new Comision(1, materia, 3300, cicloLectivo, new DiaCurso(DiasSemana.MARTES, Turnos.MANIANA));
+		Materia materia = new Materia(1, 2623, "PB2");
+		Comision comision = new Comision(1, materia, 3300, cicloLectivo, Turnos.MANIANA);
 		
 		//inscripcion
 		Integer calificacion = 8;
@@ -64,8 +64,8 @@ public class TestInscripcion {
 		LocalDate fechaInicio = LocalDate.of(2023, 8, 14), fechaFinalizacion = LocalDate.of(2023, 12, 2), 
 				inicioInscripcion = LocalDate.of(2023, 7, 31), finalInscripcion = LocalDate.of(2023, 8, 10);
 		CicloLectivo cicloLectivo = new CicloLectivo(1, fechaInicio, fechaFinalizacion, inicioInscripcion, finalInscripcion);
-		Materia materia = new Materia(2623, "PB2");
-		Comision comision = new Comision(1, materia, 3300, cicloLectivo, new DiaCurso(DiasSemana.MARTES, Turnos.MANIANA));
+		Materia materia = new Materia(1, 2623, "PB2");
+		Comision comision = new Comision(1, materia, 3300, cicloLectivo, Turnos.MANIANA);
 		
 		//inscripcion
 		Integer primerParcial = 8;
@@ -89,8 +89,8 @@ public class TestInscripcion {
 		LocalDate fechaInicio = LocalDate.of(2023, 8, 14), fechaFinalizacion = LocalDate.of(2023, 12, 2), 
 				inicioInscripcion = LocalDate.of(2023, 7, 31), finalInscripcion = LocalDate.of(2023, 8, 10);
 		CicloLectivo cicloLectivo = new CicloLectivo(1, fechaInicio, fechaFinalizacion, inicioInscripcion, finalInscripcion);
-		Materia materia = new Materia(2623, "PB2");
-		Comision comision = new Comision(1, materia, 3300, cicloLectivo, new DiaCurso(DiasSemana.MARTES, Turnos.MANIANA));
+		Materia materia = new Materia(1, 2623, "PB2");
+		Comision comision = new Comision(1, materia, 3300, cicloLectivo, Turnos.MANIANA);
 		
 		//inscripcion
 		Integer primerParcial = 8;
@@ -117,8 +117,8 @@ public class TestInscripcion {
 		LocalDate fechaInicio = LocalDate.of(2023, 8, 14), fechaFinalizacion = LocalDate.of(2023, 12, 2), 
 				inicioInscripcion = LocalDate.of(2023, 7, 31), finalInscripcion = LocalDate.of(2023, 8, 10);
 		CicloLectivo cicloLectivo = new CicloLectivo(1, fechaInicio, fechaFinalizacion, inicioInscripcion, finalInscripcion);
-		Materia materia = new Materia(2623, "PB2");
-		Comision comision = new Comision(1, materia, 3300, cicloLectivo, new DiaCurso(DiasSemana.MARTES, Turnos.MANIANA));
+		Materia materia = new Materia(1, 2623, "PB2");
+		Comision comision = new Comision(1, materia, 3300, cicloLectivo, Turnos.MANIANA);
 		
 		//inscripcion
 		Integer primerParcial = 8;
@@ -149,8 +149,8 @@ public class TestInscripcion {
 		LocalDate fechaInicio = LocalDate.of(2023, 8, 14), fechaFinalizacion = LocalDate.of(2023, 12, 2), 
 				inicioInscripcion = LocalDate.of(2023, 7, 31), finalInscripcion = LocalDate.of(2023, 8, 10);
 		CicloLectivo cicloLectivo = new CicloLectivo(1, fechaInicio, fechaFinalizacion, inicioInscripcion, finalInscripcion);
-		Materia materia = new Materia(2623, "PB2");
-		Comision comision = new Comision(1, materia, 3300, cicloLectivo, new DiaCurso(DiasSemana.MARTES, Turnos.MANIANA));
+		Materia materia = new Materia(1, 2623, "PB2");
+		Comision comision = new Comision(1, materia, 3300, cicloLectivo, Turnos.MANIANA);
 		
 		//inscripcion
 		Integer primerParcial = 5;
@@ -178,8 +178,8 @@ public class TestInscripcion {
 		LocalDate fechaInicio = LocalDate.of(2023, 8, 14), fechaFinalizacion = LocalDate.of(2023, 12, 2), 
 				inicioInscripcion = LocalDate.of(2023, 7, 31), finalInscripcion = LocalDate.of(2023, 8, 10);
 		CicloLectivo cicloLectivo = new CicloLectivo(1, fechaInicio, fechaFinalizacion, inicioInscripcion, finalInscripcion);
-		Materia materia = new Materia(2623, "PB2");
-		Comision comision = new Comision(1, materia, 3300, cicloLectivo, new DiaCurso(DiasSemana.MARTES, Turnos.MANIANA));
+		Materia materia = new Materia(1, 2623, "PB2");
+		Comision comision = new Comision(1, materia, 3300, cicloLectivo, Turnos.MANIANA);
 		
 		//inscripcion
 		Integer primerParcial = 8;
@@ -207,8 +207,8 @@ public class TestInscripcion {
 		LocalDate fechaInicio = LocalDate.of(2023, 8, 14), fechaFinalizacion = LocalDate.of(2023, 12, 2), 
 				inicioInscripcion = LocalDate.of(2023, 7, 31), finalInscripcion = LocalDate.of(2023, 8, 10);
 		CicloLectivo cicloLectivo = new CicloLectivo(1, fechaInicio, fechaFinalizacion, inicioInscripcion, finalInscripcion);
-		Materia materia = new Materia(2623, "PB2");
-		Comision comision = new Comision(1, materia, 3300, cicloLectivo, new DiaCurso(DiasSemana.MARTES, Turnos.MANIANA));
+		Materia materia = new Materia(1, 2623, "PB2");
+		Comision comision = new Comision(1, materia, 3300, cicloLectivo, Turnos.MANIANA);
 		
 		//inscripcion
 		Integer primerParcial = 8;

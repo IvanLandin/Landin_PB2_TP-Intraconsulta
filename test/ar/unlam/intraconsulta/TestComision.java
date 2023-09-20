@@ -12,12 +12,12 @@ public class TestComision {
 		LocalDate fechaInicio = LocalDate.of(2023, 8, 14), fechaFinalizacion = LocalDate.of(2023, 12, 2), 
 				inicioInscripcion = LocalDate.of(2023, 7, 31), finalInscripcion = LocalDate.of(2023, 8, 10);
 		CicloLectivo cicloLectivo = new CicloLectivo(1, fechaInicio, fechaFinalizacion, inicioInscripcion, finalInscripcion);
-		Materia materia = new Materia(2625, "Base de Datos 1");
-		DiaCurso dc1 = new DiaCurso(DiasSemana.MARTES, Turnos.MANIANA);
-		Comision comision = new Comision(1, materia, 2363, cicloLectivo, dc1);
+		Materia materia = new Materia(1, 2623, "Programacion Basica 2");
+		Comision comision = new Comision(1, materia, 2363, cicloLectivo, Turnos.MANIANA);
+		assertTrue(comision.asignarDiaDeCurso(DiasSemana.MIERCOLES));
 
 		assertNotNull(comision);
-		assertEquals(1, comision.getDiasCursada().size());
+		assertEquals(1, comision.getListaDiasDeCurso().size());
 	}
 	
 	@Test
@@ -25,13 +25,13 @@ public class TestComision {
 		LocalDate fechaInicio = LocalDate.of(2023, 8, 14), fechaFinalizacion = LocalDate.of(2023, 12, 2), 
 				inicioInscripcion = LocalDate.of(2023, 7, 31), finalInscripcion = LocalDate.of(2023, 8, 10);
 		CicloLectivo cicloLectivo = new CicloLectivo(1, fechaInicio, fechaFinalizacion, inicioInscripcion, finalInscripcion);
-		Materia materia = new Materia(2625, "Base de Datos 1");
-		DiaCurso dc1 = new DiaCurso(DiasSemana.MARTES, Turnos.MANIANA);
-		DiaCurso dc2 = new DiaCurso(DiasSemana.SABADO, Turnos.MANIANA);
-		Comision comision = new Comision(1, materia, 2363, cicloLectivo, dc1, dc2);
+		Materia materia = new Materia(1, 2625, "Base de Datos 1");
+		Comision comision = new Comision(1, materia, 2363, cicloLectivo, Turnos.MANIANA);
+		assertTrue(comision.asignarDiaDeCurso(DiasSemana.MARTES));
+		assertTrue(comision.asignarDiaDeCurso(DiasSemana.SABADO));
 		
 		assertNotNull(comision);
-		assertEquals(2, comision.getDiasCursada().size());
+		assertEquals(2, comision.getListaDiasDeCurso().size());
 	}
 	
 	@Test
@@ -40,14 +40,16 @@ public class TestComision {
 		LocalDate fechaInicio = LocalDate.of(2023, 8, 14), fechaFinalizacion = LocalDate.of(2023, 12, 2), 
 				inicioInscripcion = LocalDate.of(2023, 7, 31), finalInscripcion = LocalDate.of(2023, 8, 10);
 		CicloLectivo cicloLectivo = new CicloLectivo(1, fechaInicio, fechaFinalizacion, inicioInscripcion, finalInscripcion);
-		Materia materia = new Materia(2625, "Base de Datos 1");
-		DiaCurso dc1 = new DiaCurso(DiasSemana.MARTES, Turnos.MANIANA);
-		DiaCurso dc2 = new DiaCurso(DiasSemana.SABADO, Turnos.MANIANA);
-		Comision comision = new Comision(1, materia, 2363, cicloLectivo, dc1, dc2);
+		Materia materia = new Materia(1, 2625, "Base de Datos 1");
+		Comision comision = new Comision(1, materia, 2363, cicloLectivo, Turnos.MANIANA);
+		Aula aula = new Aula(140, 120);
 		
-		comision.setAula(new Aula(140, 120));
+		assertTrue(comision.asignarDiaDeCurso(DiasSemana.MARTES));
+		assertTrue(comision.asignarDiaDeCurso(DiasSemana.SABADO));
 		
-		assertEquals(2, comision.getDiasCursada().size());
+		assertTrue(comision.asignarAula(aula));
+		
+		assertEquals(2, comision.getListaDiasDeCurso().size());
 		assertNotNull(comision.getAula());
 		assertEquals(numeroAula, comision.getAula().getNumeroAula());
 	}
@@ -57,14 +59,11 @@ public class TestComision {
 		LocalDate fechaInicio = LocalDate.of(2023, 8, 14), fechaFinalizacion = LocalDate.of(2023, 12, 2), 
 				inicioInscripcion = LocalDate.of(2023, 7, 31), finalInscripcion = LocalDate.of(2023, 8, 10);
 		CicloLectivo cicloLectivo = new CicloLectivo(1, fechaInicio, fechaFinalizacion, inicioInscripcion, finalInscripcion);
-		Materia materia = new Materia(2625, "Base de Datos 1");
+		Materia materia = new Materia(1, 2625, "Base de Datos 1");
 		
-		DiaCurso dc1 = new DiaCurso(DiasSemana.MARTES, Turnos.MANIANA);
-		Comision comision1 = new Comision(1, materia, 2363, cicloLectivo, dc1);
+		Comision comision1 = new Comision(1, materia, 2363, cicloLectivo, Turnos.MANIANA);
+		Comision comision2 = new Comision(2, materia, 2363, cicloLectivo, Turnos.MANIANA);
 		
-		DiaCurso dc2 = new DiaCurso(DiasSemana.MARTES, Turnos.MANIANA);
-		Comision comision2 = new Comision(2, materia, 2363, cicloLectivo, dc2);
-
 		assertNotNull(comision1);
 		assertNotNull(comision2);
 		assertNotEquals(comision1, comision2);

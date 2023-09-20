@@ -4,20 +4,20 @@ import java.util.ArrayList;
 
 public class Materia {
 
+	private Integer idMateria;
 	private Integer codigoMateria;
 	private String nombreMateria;
 	private ArrayList<Materia> listaCorrelativas;
 
-	public Materia(Integer codigoMateria, String nombreMateria, ArrayList<Materia> listaCorrelativas) {
-		this.codigoMateria = codigoMateria;
-		this.nombreMateria = nombreMateria;
-		this.listaCorrelativas = listaCorrelativas;
-	}
-
-	public Materia(Integer codigoMateria, String nombreMateria) {
+	public Materia(Integer idMateria, Integer codigoMateria, String nombreMateria) {
+		this.idMateria = idMateria;
 		this.codigoMateria = codigoMateria;
 		this.nombreMateria = nombreMateria;
 		this.listaCorrelativas = new ArrayList<Materia>();
+	}
+
+	public Integer getIdMateria() {
+		return idMateria;
 	}
 
 	public String getNombreMateria() {
@@ -32,8 +32,15 @@ public class Materia {
 		return listaCorrelativas;
 	}
 
-	public void setListaCorrelativas(ArrayList<Materia> listaCorrelativas) {
-		this.listaCorrelativas = listaCorrelativas;
+	public Boolean agregarMateriaCorrelativa(Materia materiaCorrelativa) {
+		if (!buscarMateriaCorrelativa(materiaCorrelativa))
+			return listaCorrelativas.add(materiaCorrelativa);
+		
+		return false;
+	}
+
+	private Boolean buscarMateriaCorrelativa(Materia materiaCorrelativa) {
+		return listaCorrelativas.contains(materiaCorrelativa);
 	}
 
 	public Integer getCodigoMateria() {
@@ -44,14 +51,17 @@ public class Materia {
 	public String toString() {
 		return codigoMateria + " - " + nombreMateria;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		return this.codigoMateria.equals(((Materia)obj).getCodigoMateria());
+		if (obj instanceof Materia)
+			return this.idMateria.equals(((Materia) obj).getIdMateria());
+		
+		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
-		return super.hashCode();
+		return idMateria;
 	}
 }

@@ -14,16 +14,6 @@ public class TestAula {
 	}
 	
 	@Test
-	public void queSePuedaCambiarLaCapacidadDeUnAula() {
-		Aula aula = new Aula(140, 120);
-		Integer nuevaCapacidad = 130;
-		aula.setCapacidad(nuevaCapacidad);
-		
-		
-		assertEquals(nuevaCapacidad, aula.getCapacidad());
-	}
-	
-	@Test
 	public void queSePuedaCompararAulasPorNumero() {
 		Aula aula1 = new Aula(140, 120);
 		Aula aula2 = new Aula(140, 100);

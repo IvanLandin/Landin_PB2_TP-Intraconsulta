@@ -54,7 +54,10 @@ public class Alumno {
 
 	@Override
 	public boolean equals(Object obj) {
-		return this.legajo.equals(((Alumno)obj).getLegajo());
+		if(obj instanceof Alumno)
+			return dni.equals(((Alumno)obj).getDni());
+		
+		return false;
 	}
 	
 	@Override
@@ -64,6 +67,6 @@ public class Alumno {
 	
 	@Override
 	public int hashCode() {
-		return legajo;
+		return dni;
 	}
 }

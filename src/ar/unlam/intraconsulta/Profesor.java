@@ -45,13 +45,15 @@ public class Profesor {
 	
 	@Override
 	public boolean equals(Object obj) {
-		return this.legajo.equals(((Profesor)obj).getLegajo());
+		if(obj instanceof Profesor)
+			return this.dni.equals(((Profesor)obj).getDni());
+		
+		return false;
 	}
 	
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
-		return super.hashCode();
+		return dni;
 	}
 
 }

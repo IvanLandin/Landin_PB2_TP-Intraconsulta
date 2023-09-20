@@ -10,18 +10,19 @@ public class CicloLectivo {
 	private LocalDate fechaInicioInscripcion;
 	private LocalDate fechaFinalizacionInscripcion;
 
-	public CicloLectivo(Integer idCicloLectivo, LocalDate fechaInicio, LocalDate fechaFinalizacion, LocalDate fechaInicioInscripcion, LocalDate fechaFinalizacionInscripcion) {
+	public CicloLectivo(Integer idCicloLectivo, LocalDate fechaInicio, LocalDate fechaFinalizacion,
+			LocalDate fechaInicioInscripcion, LocalDate fechaFinalizacionInscripcion) {
 		this.idCicloLectivo = idCicloLectivo;
 		this.fechaInicio = fechaInicio;
 		this.fechaFinalizacion = fechaFinalizacion;
 		this.fechaInicioInscripcion = fechaInicioInscripcion;
 		this.fechaFinalizacionInscripcion = fechaFinalizacionInscripcion;
 	}
-	
+
 	public Integer getIdCicloLectivo() {
 		return idCicloLectivo;
 	}
-	
+
 	public LocalDate getFechaInicio() {
 		return fechaInicio;
 	}
@@ -38,16 +39,30 @@ public class CicloLectivo {
 		return fechaFinalizacionInscripcion;
 	}
 
+
+	public Boolean verificarSuperposicionDeIntervalos(CicloLectivo nuevoCicloLectivo) {
+
+		return ((fechaInicio.compareTo(nuevoCicloLectivo.getFechaFinalizacion())) < 0
+				&& (fechaFinalizacion.compareTo(nuevoCicloLectivo.getFechaInicio()) > 0));
+	}
+	
+	private Boolean validarIgualdadId(CicloLectivo nuevoCicloLectivo) {
+		return idCicloLectivo.equals(nuevoCicloLectivo.getIdCicloLectivo());
+	}
+
 	@Override
 	public String toString() {
 		return "Inicio del ciclo lectivo: " + fechaInicio + ". Finalizacion del ciclo lectivo: " + fechaFinalizacion;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		return this.idCicloLectivo.equals(((CicloLectivo)obj).getIdCicloLectivo());
+		if (obj instanceof CicloLectivo)
+			return validarIgualdadId((CicloLectivo) obj);
+		
+		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return idCicloLectivo;

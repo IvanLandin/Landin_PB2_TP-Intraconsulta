@@ -14,10 +14,6 @@ public class Aula {
 		return capacidad;
 	}
 
-	public void setCapacidad(Integer capacidad) {
-		this.capacidad = capacidad;
-	}
-
 	public Integer getNumeroAula() {
 		return numeroAula;
 	}
@@ -29,7 +25,10 @@ public class Aula {
 
 	@Override
 	public boolean equals(Object obj) {
-		return this.numeroAula.equals(((Aula)obj).getNumeroAula());
+		if(obj instanceof Aula)
+			return this.numeroAula.equals(((Aula)obj).getNumeroAula());
+		
+		return false;
 	}
 	
 	@Override
