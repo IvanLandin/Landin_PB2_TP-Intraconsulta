@@ -39,7 +39,7 @@ public class CicloLectivo {
 		return fechaFinalizacionInscripcion;
 	}
 
-
+	//positivo cuando el que llama pasa despues. negativo cuando el que llama paso antes. 0 si son la misma fecha
 	public Boolean verificarSuperposicionDeIntervalos(CicloLectivo nuevoCicloLectivo) {
 
 		return ((fechaInicio.compareTo(nuevoCicloLectivo.getFechaFinalizacion())) < 0

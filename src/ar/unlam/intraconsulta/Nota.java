@@ -2,47 +2,37 @@ package ar.unlam.intraconsulta;
 
 public class Nota {
 
-	private Integer primerParcial;
-	private Integer segundoParcial;
-	private Integer recuperatorio;
+	private Integer valor;
+	private TipoDeNota tipo;
 	
-	public Integer getPrimerParcial() {
-		return primerParcial;
-	}
-	
-	public void setPrimerParcial(Integer primerParcial) {
-		this.primerParcial = primerParcial;
-	}
-	
-	public Integer getSegundoParcial() {
-		return segundoParcial;
-	}
-	
-	public void setSegundoParcial(Integer segundoParcial) {
-		this.segundoParcial = segundoParcial;
-	}
-	
-	public Object getRecuperatorio() {
-		return recuperatorio;
-	}
-	
-	public void setRecuperatorio(Integer recuperatorio) {
-		this.recuperatorio = recuperatorio;
-		
-		if(primerParcial < 7) {
-			primerParcial = recuperatorio;
-		}else {
-			segundoParcial = recuperatorio;
-		}
-	}
-	
-	public Boolean getRecupera() {
-		return primerParcial < 7 ^ segundoParcial < 7;
-	}
-	
-	public Double calcularPromedio() {
-		return (primerParcial + segundoParcial) / 2.0;
+	public Nota(Integer valor, TipoDeNota tipo) {
+		this.valor = valor;
+		this.tipo = tipo;
 	}
 
+	public Integer getValor() {
+		return valor;
+	}
+
+	public TipoDeNota getTipo() {
+		return tipo;
+	}
 	
+	@Override
+	public String toString() {
+		return valor.toString();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Nota)
+			return valor.equals(((Nota)obj).getValor()) && tipo.equals(((Nota)obj).getTipo());
+		
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return valor + tipo.ordinal();
+	}
 }

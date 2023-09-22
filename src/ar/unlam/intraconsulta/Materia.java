@@ -38,6 +38,13 @@ public class Materia {
 		
 		return false;
 	}
+	
+	public boolean eliminarMateriaCorrelativa(Materia materiaCorrelativa) {
+		if (buscarMateriaCorrelativa(materiaCorrelativa))
+			return listaCorrelativas.remove(materiaCorrelativa);
+		
+		return false;
+	}
 
 	private Boolean buscarMateriaCorrelativa(Materia materiaCorrelativa) {
 		return listaCorrelativas.contains(materiaCorrelativa);

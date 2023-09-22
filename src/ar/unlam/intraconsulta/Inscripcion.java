@@ -1,27 +1,23 @@
 package ar.unlam.intraconsulta;
 
+import java.util.ArrayList;
+
 public class Inscripcion {
 	
 	private Integer idInscripcion;
 	private Comision comision;
 	private Alumno alumno;
-	private Nota nota;
-	private Boolean aprobada;
+	private ArrayList<Nota> listaDeNotas;
 	
 	public Inscripcion(Integer idInscripcion, Comision comision, Alumno alumno) {
 		this.idInscripcion = idInscripcion;
 		this.comision = comision;
 		this.alumno = alumno;
-		this.nota = new Nota();
-		this.aprobada = false;
+		this.listaDeNotas = new ArrayList<Nota>();
 	}
 
 	public Integer getIdInscripcion() {
 		return idInscripcion;
-	}
-	
-	public Boolean getAprobada() {
-		return aprobada;
 	}
 
 	public Comision getComision() {
@@ -32,35 +28,62 @@ public class Inscripcion {
 		return alumno;
 	}
 
-	public Nota getNota() {
-		return nota;
-	}
-
-	//refactorizar clase 11:20
-	public Boolean calificar(Integer valorNota) {
-		Boolean pudoCalificar = false;
-		
-		if(valorNota <= 10 && valorNota > 0)
-			if(this.nota.getPrimerParcial() == null) {
-				this.nota.setPrimerParcial(valorNota);
-				pudoCalificar = true;
-			}
-			else if(this.nota.getSegundoParcial() == null) {
-				this.nota.setSegundoParcial(valorNota);
-				estaAprobada();
-				pudoCalificar = true;
-			}
-			else if(this.nota.getRecupera() && this.nota.getRecuperatorio() == null){
-				this.nota.setRecuperatorio(valorNota);
-				estaAprobada();
-				pudoCalificar = true;
-			}	
-		
-		return pudoCalificar;
+	public ArrayList<Nota> getListaDeNotas() {
+		return listaDeNotas;
 	}
 	
-	private void estaAprobada() {
-		this.aprobada = nota.getPrimerParcial() >= 7 && nota.getSegundoParcial() >= 7;
+	public Boolean calificar(Integer valorNota, TipoDeNota tipoNota) {
+		
+		if((valorNota <= 10 && valorNota > 0) && listaDeNotas.size() < 3 && buscarNotaDeTipo(tipoNota) == null)
+			return listaDeNotas.add(new Nota(valorNota, tipoNota));
+		
+		return false;
+	}
+	
+	public Boolean estaPromocionada() {
+		return obtenerNotaFinal() >= 7 && verificarQueLasNotasSeanMayorOIgualAUnNumero(7);
+	}
+	
+	public Boolean estaAprobada() {
+		return obtenerNotaFinal() >= 4;
+	}
+
+	private Boolean verificarQueLasNotasSeanMayorOIgualAUnNumero(Integer numero) {
+		if(listaDeNotas.size() == 3)
+			return (listaDeNotas.get(0).getValor() >= numero || listaDeNotas.get(1).getValor() >= numero) && listaDeNotas.get(2).getValor() >= numero;
+		
+		return listaDeNotas.get(0).getValor() >= numero && listaDeNotas.get(1).getValor() >= numero;
+	}
+	
+	public Double obtenerNotaFinal() {
+		Double suma = 0.0;
+		
+		if(!verificarQueLasNotasSeanMayorOIgualAUnNumero(4))
+			return 2.0;
+		
+		if(listaDeNotas.size() == 2) {
+			for (Nota nota : listaDeNotas) {
+				suma += nota.getValor();
+			}
+		}
+		else {
+			if(buscarNotaDeTipo(TipoDeNota.RECUPERATORIO_PRIMER_PARCIAL) != null)
+				suma += buscarNotaDeTipo(TipoDeNota.SEGUNDO_PARCIAL).getValor();
+			else
+				suma += buscarNotaDeTipo(TipoDeNota.PRIMER_PARCIAL).getValor();
+			
+			suma += listaDeNotas.get(2).getValor();
+		}
+		
+		return suma / 2;
+	}
+	
+	private Nota buscarNotaDeTipo(TipoDeNota tipo) {
+		for (Nota nota : listaDeNotas) {
+			if(nota.getTipo().equals(tipo))
+				return nota;
+		}
+		return null;
 	}
 	
 	@Override
@@ -70,7 +93,10 @@ public class Inscripcion {
 	
 	@Override
 	public boolean equals(Object obj) {
-		return this.idInscripcion.equals(((Inscripcion)obj).getIdInscripcion());
+		if(obj instanceof Inscripcion)
+			return idInscripcion.equals(((Inscripcion)obj).getIdInscripcion());
+			
+		return false;
 	}
 	
 	@Override
