@@ -49,10 +49,20 @@ public class Inscripcion {
 	}
 
 	private Boolean verificarQueLasNotasSeanMayorOIgualAUnNumero(Integer numero) {
-		if(listaDeNotas.size() == 3)
-			return (listaDeNotas.get(0).getValor() >= numero || listaDeNotas.get(1).getValor() >= numero) && listaDeNotas.get(2).getValor() >= numero;
+		for (Nota nota : listaDeNotas) {
+			if(parcialValidoEnCasoDeHaberRendidoRecuperatorio() != null) {
+				if((nota.getTipo().equals(parcialValidoEnCasoDeHaberRendidoRecuperatorio()) || nota.getTipo().equals(recuperatorioRendido())) && 
+					nota.getValor() < numero) {
+					return false;
+				}
+			}
+			else {
+				if(nota.getValor() < numero)
+					return false;
+			}
+		}
 		
-		return listaDeNotas.get(0).getValor() >= numero && listaDeNotas.get(1).getValor() >= numero;
+		return true;
 	}
 	
 	public Double obtenerNotaFinal() {
@@ -66,16 +76,39 @@ public class Inscripcion {
 				suma += nota.getValor();
 			}
 		}
-		else {
-			if(buscarNotaDeTipo(TipoDeNota.RECUPERATORIO_PRIMER_PARCIAL) != null)
-				suma += buscarNotaDeTipo(TipoDeNota.SEGUNDO_PARCIAL).getValor();
-			else
-				suma += buscarNotaDeTipo(TipoDeNota.PRIMER_PARCIAL).getValor();
-			
-			suma += listaDeNotas.get(2).getValor();
+		else if(listaDeNotas.size() == 3){
+			if(recuperatorioRendido() != null){
+				if(recuperatorioRendido().equals(TipoDeNota.RECUPERATORIO_PRIMER_PARCIAL)) {
+					suma += buscarNotaDeTipo(TipoDeNota.SEGUNDO_PARCIAL).getValor();
+					suma += buscarNotaDeTipo(TipoDeNota.RECUPERATORIO_PRIMER_PARCIAL).getValor();
+				}
+				else {
+					suma += buscarNotaDeTipo(TipoDeNota.PRIMER_PARCIAL).getValor();
+					suma += buscarNotaDeTipo(TipoDeNota.RECUPERATORIO_SEGUNDO_PARCIAL).getValor();
+				}
+			}
 		}
 		
 		return suma / 2;
+	}
+	
+	private TipoDeNota parcialValidoEnCasoDeHaberRendidoRecuperatorio() {
+		if(recuperatorioRendido() != null) {
+			if(recuperatorioRendido().equals(TipoDeNota.RECUPERATORIO_SEGUNDO_PARCIAL))
+				return TipoDeNota.PRIMER_PARCIAL;
+			else
+				return TipoDeNota.SEGUNDO_PARCIAL;			
+		}
+		
+		return null;
+	}
+	
+	private TipoDeNota recuperatorioRendido() {
+		for (Nota nota : listaDeNotas) {
+			if(nota.getTipo().equals(TipoDeNota.RECUPERATORIO_SEGUNDO_PARCIAL) || nota.getTipo().equals(TipoDeNota.RECUPERATORIO_PRIMER_PARCIAL))
+				return nota.getTipo();
+		}
+		return null;
 	}
 	
 	private Nota buscarNotaDeTipo(TipoDeNota tipo) {

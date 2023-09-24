@@ -45,17 +45,20 @@ public class Comision {
 	public Turnos getTurno() {
 		return turno;
 	}
+	
+	public Aula getAula() {
+		return aula;
+	}
 
 	public Boolean asignarAula(Aula aula) {
-		if(this.aula == null){
+		if(this.aula == null && aula.estaDisponible(listaDiasDeCurso, turno, cicloLectivo) && listaDiasDeCurso.size() > 0){
 			this.aula = aula;
+			for (DiasSemana dia : listaDiasDeCurso) {
+				aula.ocupar(dia, turno, cicloLectivo);
+			}
 			return true;
 		}
 		return false;
-	}
-
-	public Aula getAula() {
-		return aula;
 	}
 	
 	public Boolean asignarDiaDeCurso(DiasSemana diaDeCurso) {

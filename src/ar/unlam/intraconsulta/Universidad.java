@@ -13,6 +13,7 @@ public class Universidad {
 	private ArrayList<Profesor> listaProfesores;
 	private ArrayList<Inscripcion> listaInscripciones;
 	private ArrayList<ProfesorComision> listaAsignacionesProfesorComision;
+	private ArrayList<Aula> listaAulas;
 	private static Integer idMateria;
 	private static Integer idCicloLectivo;
 	private static Integer idComision;
@@ -37,6 +38,7 @@ public class Universidad {
 		this.listaProfesores = new ArrayList<Profesor>();
 		this.listaInscripciones = new ArrayList<Inscripcion>();
 		this.listaAsignacionesProfesorComision = new ArrayList<ProfesorComision>();
+		this.listaAulas = new ArrayList<Aula>();
 	}
 
 	public Integer getIdCicloLectivo() {
@@ -123,17 +125,17 @@ public class Universidad {
 		return false;
 	}
 
-//	private CicloLectivo buscarCicloLectivoPorId(Integer idCicloLectivo) {
-//		CicloLectivo cicloLectivoBuscado = null;
-//
-//		for (CicloLectivo cicloLectivo : listaCiclosLectivos) {
-//			if (cicloLectivo.getIdCicloLectivo().equals(idCicloLectivo)) {
-//				cicloLectivoBuscado = cicloLectivo;
-//			}
-//		}
-//
-//		return cicloLectivoBuscado;
-//	}
+	public CicloLectivo buscarCicloLectivoPorId(Integer idCicloLectivo) {
+		CicloLectivo cicloLectivoBuscado = null;
+
+		for (CicloLectivo cicloLectivo : listaCiclosLectivos) {
+			if (cicloLectivo.getIdCicloLectivo().equals(idCicloLectivo)) {
+				cicloLectivoBuscado = cicloLectivo;
+			}
+		}
+
+		return cicloLectivoBuscado;
+	}
 
 	/*--------------------------------------------------MATERIA--------------------------------------------------*/
 
@@ -188,7 +190,8 @@ public class Universidad {
 		Boolean pudoAgregarComision = false;
 		Comision comisionBuscada = buscarComisionPorId(nuevaComision.getId());
 
-		if (comisionBuscada == null && !(verificarComisionDuplicada(nuevaComision))) {
+		if (comisionBuscada == null && buscarMateria(nuevaComision.getMateriaComision()) 
+				&& buscarCicloLectivo(nuevaComision.getCicloLectivo()) && !(verificarComisionDuplicada(nuevaComision))) {
 			listaComisiones.add(nuevaComision);
 			pudoAgregarComision = true;
 		}
@@ -279,18 +282,38 @@ public class Universidad {
 		Comision comisionBuscada = buscarComisionPorId(idComision);
 		Inscripcion inscripcionBuscada = buscarInscripcion(dniAlumno, idComision);
 		
-		if(alumnoBuscado != null && comisionBuscada != null && inscripcionBuscada == null
-				&& fechaDeInscripcionValida(comisionBuscada) && correlativasAprobadas(dniAlumno, idComision))
+		if(alumnoBuscado != null && comisionBuscada != null && inscripcionBuscada == null 
+				&& verificarValidezDeInscripcion(alumnoBuscado, comisionBuscada)) {
+			
 			return listaInscripciones.add(new Inscripcion(getIdInscripcion(), comisionBuscada, alumnoBuscado));
+		}
 		
 		return false;
 	}
 	
-	public Boolean registrarNota(Integer idComision, Integer dniAlumno, Nota nota) {
-		Inscripcion inscripcionBuscada = buscarInscripcion(dniAlumno, idComision);
+	private Boolean verificarValidezDeInscripcion(Alumno alumno, Comision comision) {
+		return fechaDeInscripcionValida(comision) && correlativasAprobadas(alumno.getDni(), comision.getId())
+				&& cantidadDeInscriptosMenorACantidadMaxima(comision) 
+				&& verificarDiaYTurnoLibreDeUnAlumno(alumno.getDni(), comision.getListaDiasDeCurso(), comision.getTurno(), comision.getCicloLectivo())
+				&& !obtenerMateriasAprobadasParaUnAlumno(alumno.getDni()).contains(comision.getMateriaComision());
+	}
+	
+	private boolean verificarDiaYTurnoLibreDeUnAlumno(Integer dniAlumno, ArrayList<DiasSemana> dias, Turnos turno, CicloLectivo cicloLectivo) {
+		ArrayList<Inscripcion> inscripcionesDeUnAlumno = obtenerListaDeInscripcionesDeUnAlumno(dniAlumno);
 		
-		if(inscripcionBuscada != null)
-			return inscripcionBuscada.calificar(nota.getValor(), nota.getTipo());
+		for (Inscripcion inscripcion : inscripcionesDeUnAlumno) {
+			if(inscripcion.getComision().getTurno().equals(turno) 
+					&& inscripcion.getComision().getListaDiasDeCurso().containsAll(dias)
+					&& inscripcion.getComision().getCicloLectivo().equals(cicloLectivo))
+				return false;
+		}
+		
+		return true;
+	}
+
+	private Boolean cantidadDeInscriptosMenorACantidadMaxima(Comision comision) {
+		if(comision.getAula() != null)
+			return comision.getAula().getCapacidad() > obtenerListaDeAlumnosDeUnaComision(comision.getId()).size();
 		
 		return false;
 	}
@@ -343,14 +366,24 @@ public class Universidad {
 		return listaMateriasAprobadas;
 	}
 	
+	public ArrayList<Materia> obtenerMateriasPromocionadasParaUnAlumno(Integer dniAlumno) {
+		ArrayList<Inscripcion> listaInscripcionesDeAlumno = obtenerListaDeInscripcionesDeUnAlumno(dniAlumno);
+		ArrayList<Materia> listaMateriasPromocionadas = new ArrayList<Materia>();
+		
+		for (Inscripcion inscripcion : listaInscripcionesDeAlumno) {
+			if(inscripcion.estaPromocionada()){
+				listaMateriasPromocionadas.add(inscripcion.getComision().getMateriaComision());				
+			}
+		}
+		
+		return listaMateriasPromocionadas;
+	}
+	
 	private Boolean correlativasAprobadas(Integer dniAlumno, Integer idComision) {
 		ArrayList<Materia> listaCorrelativas = buscarComisionPorId(idComision).getMateriaComision().getListaCorrelativas();
 		
-		if(listaCorrelativas.size() > 0) {
-			ArrayList<Materia> listaMateriasAprobadas = obtenerMateriasAprobadasParaUnAlumno(dniAlumno);
-			
-			return listaMateriasAprobadas.containsAll(listaCorrelativas);
-		}
+		if(listaCorrelativas.size() > 0)			
+			return obtenerMateriasAprobadasParaUnAlumno(dniAlumno).containsAll(listaCorrelativas);
 		
 		return true;
 	}
@@ -362,13 +395,43 @@ public class Universidad {
 		Comision comisionBuscada = buscarComisionPorId(idComision);
 		ProfesorComision asignacionProfesorComisionBuscada = buscarProfesorComision(comisionBuscada, profesorBuscado);
 
-		if ((profesorBuscado != null && comisionBuscada != null) && asignacionProfesorComisionBuscada == null && comisionNecesitaMasDocentes(idComision)) {
+		if (profesorBuscado != null && comisionBuscada != null && asignacionProfesorComisionBuscada == null 
+				&& verificarValidezAsignacion(profesorBuscado, comisionBuscada)) {
 			
 			ProfesorComision nuevaAsignacion = new ProfesorComision(getIdAsignacionProfesorComision(), profesorBuscado, comisionBuscada);
 			return listaAsignacionesProfesorComision.add(nuevaAsignacion);
 		}
 
 		return false;
+	}
+	
+	private Boolean verificarValidezAsignacion(Profesor profesor, Comision comision) {
+		return comisionNecesitaMasDocentes(comision.getId())
+				&& verificarDiaYTurnoLibreDeUnProfesor(profesor.getDni(), comision.getListaDiasDeCurso(), comision.getTurno(), comision.getCicloLectivo());
+	}
+
+	private Boolean verificarDiaYTurnoLibreDeUnProfesor(Integer dniProfesor, ArrayList<DiasSemana> dias, Turnos turno, CicloLectivo cicloLectivo) {
+		ArrayList<ProfesorComision> asignacionesProfeComision = obtenerListaDeAsignacionesDeComisionParaUnProfesor(dniProfesor);
+		
+		for (ProfesorComision profesorComision : asignacionesProfeComision) {
+			if(profesorComision.getComision().getTurno().equals(turno)
+					&& profesorComision.getComision().getListaDiasDeCurso().containsAll(dias)
+					&& profesorComision.getComision().getCicloLectivo().equals(cicloLectivo))
+				return false;
+		}
+		
+		return true;
+	}
+	
+	public ArrayList<ProfesorComision> obtenerListaDeAsignacionesDeComisionParaUnProfesor(Integer dniInteger) {
+		ArrayList<ProfesorComision> asignacionesProfeComision = new ArrayList<ProfesorComision>();
+		
+		for (ProfesorComision asignacion : listaAsignacionesProfesorComision) {
+			if(asignacion.getProfesor().getDni().equals(dniInteger))
+				asignacionesProfeComision.add(asignacion);
+		}
+		
+		return asignacionesProfeComision;
 	}
 
 	public ArrayList<ProfesorComision> obtenerListaDeProfesoresDeUnaComision(Integer idComision) {
@@ -394,8 +457,55 @@ public class Universidad {
 		return asignacionBuscada;
 	}
 
-
 	/*--------------------------------------------------AULA--------------------------------------------------*/
 
+	public boolean agregarAula(Aula aula) {
+		if(!aulaExiste(aula))
+			return listaAulas.add(aula);
+			
+		return false;
+	}
+	
+	private Boolean aulaExiste(Aula aula) {
+		return listaAulas.contains(aula);
+	}
+	
+	public Aula buscarAulaPorNumero(Integer numeroAula) {
+		for (Aula aula : listaAulas) {
+			if(aula.getNumeroAula().equals(numeroAula))
+				return aula;
+		}
+		return null;
+	}
+	
+	public Boolean asignarAulaAComision(Integer idComision, Integer numeroAula) {
+		Comision comisionBuscada = buscarComisionPorId(idComision);
+		Aula aulaBuscada = buscarAulaPorNumero(numeroAula);
+		
+		if(comisionBuscada != null && aulaBuscada != null)
+			return comisionBuscada.asignarAula(aulaBuscada);
+		
+		return false;
+	}
+
 	/*--------------------------------------------------NOTA--------------------------------------------------*/
+	
+	public Boolean registrarNota(Integer idComision, Integer dniAlumno, Nota nota) {
+		Inscripcion inscripcionBuscada = buscarInscripcion(dniAlumno, idComision);
+		
+		if(inscripcionBuscada != null)
+			if((nota.getValor() >= 7 && verificarMateriasCorrelativasPromocionadas(idComision, dniAlumno)) || nota.getValor() < 7)
+				return inscripcionBuscada.calificar(nota.getValor(), nota.getTipo());
+			
+		return false;
+	}
+	
+	private Boolean verificarMateriasCorrelativasPromocionadas(Integer idComision, Integer dniAlumno) {
+		ArrayList<Materia> listaCorrelativas = buscarComisionPorId(idComision).getMateriaComision().getListaCorrelativas();
+		
+		if(listaCorrelativas.size() > 0)
+			return obtenerMateriasPromocionadasParaUnAlumno(dniAlumno).containsAll(listaCorrelativas);
+		
+		return true;
+	}
 }
