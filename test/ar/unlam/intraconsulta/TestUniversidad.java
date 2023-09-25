@@ -506,7 +506,6 @@ public class TestUniversidad {
 		
 		assertTrue(universidad.registrarNota(comisionCorrelativa2.getId(), alumno.getDni(), new Nota(2, TipoDeNota.PRIMER_PARCIAL)));
 		assertTrue(universidad.registrarNota(comisionCorrelativa2.getId(), alumno.getDni(), new Nota(7, TipoDeNota.SEGUNDO_PARCIAL)));
-		assertEquals(2.0, universidad.buscarInscripcion(alumno.getDni(), comisionCorrelativa2.getId()).obtenerNotaFinal(), 0.01);
 		assertFalse(universidad.buscarInscripcion(alumno.getDni(), comisionCorrelativa2.getId()).estaAprobada());
 		assertTrue(universidad.registrarNota(comisionCorrelativa2.getId(), alumno.getDni(), new Nota(4, TipoDeNota.RECUPERATORIO_PRIMER_PARCIAL)));
 		assertTrue(universidad.buscarInscripcion(alumno.getDni(), comisionCorrelativa2.getId()).estaAprobada());
@@ -753,7 +752,212 @@ public class TestUniversidad {
 		assertFalse(universidad.buscarInscripcion(alumno.getDni(), comisionMateria.getId()).estaPromocionada());
 	}
 	
+	@Test
+	public void queSePuedaObtenerElListaDeMateriasQueLeFaltanCursarAUnAlumno() {
+		Universidad universidad = new Universidad("UNLaM");
+		CicloLectivo cicloLectivo1 = new CicloLectivo(universidad.getIdCicloLectivo(), LocalDate.of(2023, 12, 3),
+				LocalDate.of(2023, 12, 23), LocalDate.of(2023, 9, 18), LocalDate.of(2023, 12, 2));
+		CicloLectivo cicloLectivo2 = new CicloLectivo(universidad.getIdCicloLectivo(), LocalDate.of(2024, 1, 31),
+				LocalDate.of(2024, 3, 2), LocalDate.of(2023, 9, 18), LocalDate.of(2023, 12, 2));
+		Aula aula1 = new Aula(261, 50);
+		Aula aula2 = new Aula(123, 60);
+		Aula aula3 = new Aula(317, 60);
+		
+		assertTrue(universidad.agregarCicloLectivo(cicloLectivo1));
+		assertTrue(universidad.agregarCicloLectivo(cicloLectivo2));
+		assertTrue(universidad.agregarAula(aula1));
+		assertTrue(universidad.agregarAula(aula2));
+		assertTrue(universidad.agregarAula(aula3));
+		
+		Materia correlativa1 = new Materia(universidad.getIdMateria(), 2619, "PB1");
+		Materia correlativa2 = new Materia(universidad.getIdMateria(), 2620, "IG");
+		Materia nuevaMateria = new Materia(universidad.getIdMateria(), 2624, "PW1");
+		
+		ArrayList<Materia> listaCorrelativas = new ArrayList<Materia>();
+		listaCorrelativas.add(correlativa1);
+		listaCorrelativas.add(correlativa2);
+		
+		assertTrue(universidad.agregarMateria(nuevaMateria));
+		
+		for (Materia correlativa : listaCorrelativas) {
+			assertTrue(universidad.agregarMateria(correlativa));
+			assertTrue(universidad.asignarMateriaCorrelativa(nuevaMateria.getIdMateria(), correlativa.getIdMateria()));
+		}
+		
+		Alumno alumno = new Alumno(universidad.getIdAlumno(), "Juan", "Perez", 40123456, LocalDate.of(1997, 3, 20), LocalDate.of(2023, 1, 31));
+		Comision comisionCorrelativa2 = new Comision(universidad.getIdComision(), correlativa2, 5678, cicloLectivo1, Turnos.MANIANA);
+		
+		assertTrue(universidad.agregarAlumno(alumno));
+		assertTrue(comisionCorrelativa2.asignarDiaDeCurso(DiasSemana.MIERCOLES));
+		assertTrue(universidad.agregarComision(comisionCorrelativa2));
+		assertTrue(universidad.asignarAulaAComision(comisionCorrelativa2.getId(), aula2.getNumeroAula()));
+		assertTrue(universidad.inscribirAlumnoAComision(alumno.getDni(), comisionCorrelativa2.getId()));
+		
+		assertTrue(universidad.registrarNota(comisionCorrelativa2.getId(), alumno.getDni(), new Nota(7, TipoDeNota.PRIMER_PARCIAL)));
+		assertTrue(universidad.registrarNota(comisionCorrelativa2.getId(), alumno.getDni(), new Nota(7, TipoDeNota.SEGUNDO_PARCIAL)));
+		assertTrue(universidad.buscarInscripcion(alumno.getDni(), comisionCorrelativa2.getId()).estaAprobada());
+		assertTrue(universidad.buscarInscripcion(alumno.getDni(), comisionCorrelativa2.getId()).estaPromocionada());
+		
+		ArrayList<Materia> listaMateriasPorCursar = new ArrayList<Materia>();
+		
+		listaMateriasPorCursar.add(nuevaMateria);
+		listaMateriasPorCursar.add(correlativa1);
+		
+		assertEquals(listaMateriasPorCursar, universidad.obtenerMateriasQueFaltanCursarParaUnAlumno(alumno.getDni()));
+	}
+	
+	@Test
+	public void queSePuedaRendirFinalDeUnaMateriaAprobada() {
+		Universidad universidad = new Universidad("UNLaM");
+		CicloLectivo cicloLectivo = new CicloLectivo(universidad.getIdCicloLectivo(), LocalDate.of(2024, 1, 31),
+				LocalDate.of(2024, 3, 2), LocalDate.of(2023, 9, 18), LocalDate.of(2023, 12, 31));
+		
+		assertTrue(universidad.agregarCicloLectivo(cicloLectivo));
+		
+		//materia
+		Materia materia = new Materia(universidad.getIdMateria(), 2619, "PB1");
+		
+		assertTrue(universidad.agregarMateria(materia));
+		
+		//comisiones y alumno
+		Comision comision = new Comision(universidad.getIdComision(), materia, 1234, cicloLectivo, Turnos.MANIANA);
+		Alumno alumno = new Alumno(universidad.getIdAlumno(), "Juan", "Perez", 40123456, LocalDate.of(1997, 3, 20), LocalDate.of(2023, 1, 31));
+		
+		assertTrue(universidad.agregarAlumno(alumno));
+		assertTrue(comision.asignarDiaDeCurso(DiasSemana.MARTES));
+		assertTrue(comision.asignarDiaDeCurso(DiasSemana.VIERNES));
+		assertTrue(universidad.agregarComision(comision));
+		
+		assertTrue(universidad.agregarAula(new Aula(123, 60)));
+		assertTrue(universidad.asignarAulaAComision(comision.getId(), 123));
+		assertTrue(universidad.inscribirAlumnoAComision(alumno.getDni(), comision.getId()));
+		
+		assertTrue(universidad.registrarNota(comision.getId(), alumno.getDni(), new Nota(4, TipoDeNota.PRIMER_PARCIAL)));
+		assertTrue(universidad.registrarNota(comision.getId(), alumno.getDni(), new Nota(7, TipoDeNota.SEGUNDO_PARCIAL)));
+		assertTrue(universidad.buscarInscripcion(alumno.getDni(), comision.getId()).estaAprobada());
+		assertFalse(universidad.buscarInscripcion(alumno.getDni(), comision.getId()).estaPromocionada());
+		assertTrue(universidad.registrarNota(comision.getId(), alumno.getDni(), new Nota(4, TipoDeNota.FINAL)));
+		assertEquals(4.0, universidad.obtenerNota(comision.getId(), alumno.getDni()), 0.01);
+	}
+	
+	@Test
+	public void queSePuedaObtenerLaNotaDeUnAlumnoEnUnaComision() {
+		Universidad universidad = new Universidad("UNLaM");
+		CicloLectivo cicloLectivo = new CicloLectivo(universidad.getIdCicloLectivo(), LocalDate.of(2024, 1, 31),
+				LocalDate.of(2024, 3, 2), LocalDate.of(2023, 9, 18), LocalDate.of(2023, 12, 31));
+		
+		assertTrue(universidad.agregarCicloLectivo(cicloLectivo));
+		
+		//materia
+		Materia materia = new Materia(universidad.getIdMateria(), 2619, "PB1");
+		
+		assertTrue(universidad.agregarMateria(materia));
+		
+		//comisiones y alumno
+		Comision comision = new Comision(universidad.getIdComision(), materia, 1234, cicloLectivo, Turnos.MANIANA);
+		Alumno alumno = new Alumno(universidad.getIdAlumno(), "Juan", "Perez", 40123456, LocalDate.of(1997, 3, 20), LocalDate.of(2023, 1, 31));
+		
+		assertTrue(universidad.agregarAlumno(alumno));
+		assertTrue(comision.asignarDiaDeCurso(DiasSemana.MARTES));
+		assertTrue(comision.asignarDiaDeCurso(DiasSemana.VIERNES));
+		assertTrue(universidad.agregarComision(comision));
+		
+		assertTrue(universidad.agregarAula(new Aula(123, 60)));
+		assertTrue(universidad.asignarAulaAComision(comision.getId(), 123));
+		assertTrue(universidad.inscribirAlumnoAComision(alumno.getDni(), comision.getId()));
+		
+		assertTrue(universidad.registrarNota(comision.getId(), alumno.getDni(), new Nota(8, TipoDeNota.PRIMER_PARCIAL)));
+		assertTrue(universidad.registrarNota(comision.getId(), alumno.getDni(), new Nota(7, TipoDeNota.SEGUNDO_PARCIAL)));
+		assertTrue(universidad.buscarInscripcion(alumno.getDni(), comision.getId()).estaAprobada());
+		assertTrue(universidad.buscarInscripcion(alumno.getDni(), comision.getId()).estaPromocionada());
+		assertEquals(7.5, universidad.obtenerNota(comision.getId(), alumno.getDni()), 0.01);
+	}
+	
+	@Test
+	public void queSePuedaObtenerElPromedioDeTodasLasNotasFinalesDeUnAlumno() {
+		Universidad universidad = new Universidad("UNLaM");
+		CicloLectivo cicloLectivo1 = new CicloLectivo(universidad.getIdCicloLectivo(), LocalDate.of(2023, 12, 3),
+				LocalDate.of(2023, 12, 23), LocalDate.of(2023, 9, 18), LocalDate.of(2023, 12, 2));
+		CicloLectivo cicloLectivo2 = new CicloLectivo(universidad.getIdCicloLectivo(), LocalDate.of(2024, 1, 31),
+				LocalDate.of(2024, 3, 2), LocalDate.of(2023, 9, 18), LocalDate.of(2023, 12, 2));
+		Aula aula1 = new Aula(261, 50);
+		Aula aula2 = new Aula(123, 60);
+		Aula aula3 = new Aula(317, 60);
+		
+		assertTrue(universidad.agregarCicloLectivo(cicloLectivo1));
+		assertTrue(universidad.agregarCicloLectivo(cicloLectivo2));
+		assertTrue(universidad.agregarAula(aula1));
+		assertTrue(universidad.agregarAula(aula2));
+		assertTrue(universidad.agregarAula(aula3));
+		
+		//materia
+		Materia correlativa1 = new Materia(universidad.getIdMateria(), 2619, "PB1");
+		Materia correlativa2 = new Materia(universidad.getIdMateria(), 2620, "IG");
+		Materia nuevaMateria = new Materia(universidad.getIdMateria(), 2624, "PW1");
+		
+		ArrayList<Materia> listaCorrelativas = new ArrayList<Materia>();
+		listaCorrelativas.add(correlativa1);
+		listaCorrelativas.add(correlativa2);
+		
+		assertTrue(universidad.agregarMateria(nuevaMateria));
+		
+		for (Materia correlativa : listaCorrelativas) {
+			assertTrue(universidad.agregarMateria(correlativa));
+			assertTrue(universidad.asignarMateriaCorrelativa(nuevaMateria.getIdMateria(), correlativa.getIdMateria()));
+		}
+		
+		assertTrue(universidad.buscarMateriaPorId(nuevaMateria.getIdMateria()).getListaCorrelativas().containsAll(listaCorrelativas));
+		
+		//comisiones y alumno
+		Comision comisionCorrelativa1 = new Comision(universidad.getIdComision(), correlativa1, 1234, cicloLectivo1, Turnos.MANIANA);
+		Comision comisionCorrelativa2 = new Comision(universidad.getIdComision(), correlativa2, 5678, cicloLectivo1, Turnos.MANIANA);
+		Comision comisionMateria = new Comision(universidad.getIdComision(), nuevaMateria, 9123, cicloLectivo2, Turnos.MANIANA);
+		Alumno alumno = new Alumno(universidad.getIdAlumno(), "Juan", "Perez", 40123456, LocalDate.of(1997, 3, 20), LocalDate.of(2023, 1, 31));
+		
+		assertTrue(universidad.agregarAlumno(alumno));
+		
+		assertTrue(comisionCorrelativa1.asignarDiaDeCurso(DiasSemana.MARTES));
+		assertTrue(comisionCorrelativa1.asignarDiaDeCurso(DiasSemana.VIERNES));
+		assertTrue(universidad.agregarComision(comisionCorrelativa1));
+		assertTrue(universidad.asignarAulaAComision(comisionCorrelativa1.getId(), aula1.getNumeroAula()));
+		assertTrue(universidad.inscribirAlumnoAComision(alumno.getDni(), comisionCorrelativa1.getId()));
+		
+		assertTrue(universidad.registrarNota(comisionCorrelativa1.getId(), alumno.getDni(), new Nota(7, TipoDeNota.PRIMER_PARCIAL)));
+		assertTrue(universidad.registrarNota(comisionCorrelativa1.getId(), alumno.getDni(), new Nota(8, TipoDeNota.SEGUNDO_PARCIAL)));
+		assertTrue(universidad.buscarInscripcion(alumno.getDni(), comisionCorrelativa1.getId()).estaAprobada());
+		assertTrue(universidad.buscarInscripcion(alumno.getDni(), comisionCorrelativa1.getId()).estaPromocionada());
+		
+		assertTrue(comisionCorrelativa2.asignarDiaDeCurso(DiasSemana.MIERCOLES));
+		assertTrue(universidad.agregarComision(comisionCorrelativa2));
+		assertTrue(universidad.asignarAulaAComision(comisionCorrelativa2.getId(), aula2.getNumeroAula()));
+		assertTrue(universidad.inscribirAlumnoAComision(alumno.getDni(), comisionCorrelativa2.getId()));
+		
+		assertTrue(universidad.registrarNota(comisionCorrelativa2.getId(), alumno.getDni(), new Nota(2, TipoDeNota.PRIMER_PARCIAL)));
+		assertTrue(universidad.registrarNota(comisionCorrelativa2.getId(), alumno.getDni(), new Nota(7, TipoDeNota.SEGUNDO_PARCIAL)));
+		assertTrue(universidad.registrarNota(comisionCorrelativa2.getId(), alumno.getDni(), new Nota(4, TipoDeNota.RECUPERATORIO_PRIMER_PARCIAL)));
+		assertTrue(universidad.buscarInscripcion(alumno.getDni(), comisionCorrelativa2.getId()).estaAprobada());
+		assertFalse(universidad.buscarInscripcion(alumno.getDni(), comisionCorrelativa2.getId()).estaPromocionada());
+		assertTrue(universidad.registrarNota(comisionCorrelativa2.getId(), alumno.getDni(), new Nota(7, TipoDeNota.FINAL)));
+		
+		assertTrue(comisionMateria.asignarDiaDeCurso(DiasSemana.MIERCOLES));
+		assertTrue(universidad.agregarComision(comisionMateria));
+		assertTrue(universidad.asignarAulaAComision(comisionMateria.getId(), aula3.getNumeroAula()));
+		assertTrue(universidad.inscribirAlumnoAComision(alumno.getDni(), comisionMateria.getId()));
+		
+		assertTrue(universidad.registrarNota(comisionMateria.getId(), alumno.getDni(), new Nota(7, TipoDeNota.PRIMER_PARCIAL)));
+		assertTrue(universidad.registrarNota(comisionMateria.getId(), alumno.getDni(), new Nota(9, TipoDeNota.SEGUNDO_PARCIAL)));
+		assertTrue(universidad.buscarInscripcion(alumno.getDni(), comisionMateria.getId()).estaAprobada());
+		assertTrue(universidad.buscarInscripcion(alumno.getDni(), comisionMateria.getId()).estaPromocionada());
+		
+		Double valorEsperado = (universidad.obtenerNota(comisionCorrelativa1.getId(), alumno.getDni())
+				+ universidad.obtenerNota(comisionCorrelativa2.getId(), alumno.getDni())
+				+ universidad.obtenerNota(comisionMateria.getId(), alumno.getDni())) / 3;
+		
+		assertEquals(valorEsperado, universidad.obtenerPromedio(alumno.getDni()), 0.01);
+	}
+	
 	/*--------------------------------------------------PROFECOMISION--------------------------------------------------*/
+	
 	@Test
 	public void queSePuedaAsignarUnProfesorAUnaComision() {
 		Universidad universidad = new Universidad("UNLaM");
@@ -893,8 +1097,4 @@ public class TestUniversidad {
 		assertEquals(2, universidad.getListaAsignacionesProfesorComision().size());
 		assertEquals(2, universidad.obtenerListaDeProfesoresDeUnaComision(comision.getId()).size());
 	}
-
-	/*--------------------------------------------------AULA--------------------------------------------------*/
-
-	/*--------------------------------------------------NOTA--------------------------------------------------*/
 }

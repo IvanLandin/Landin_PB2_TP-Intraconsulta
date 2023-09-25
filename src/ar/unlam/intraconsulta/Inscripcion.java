@@ -34,18 +34,25 @@ public class Inscripcion {
 	
 	public Boolean calificar(Integer valorNota, TipoDeNota tipoNota) {
 		
-		if((valorNota <= 10 && valorNota > 0) && listaDeNotas.size() < 3 && buscarNotaDeTipo(tipoNota) == null)
+		if((valorNota <= 10 && valorNota > 0) && (listaDeNotas.size() < 3 || tipoNota.equals(TipoDeNota.FINAL)) && buscarNotaDeTipo(tipoNota) == null)
 			return listaDeNotas.add(new Nota(valorNota, tipoNota));
 		
 		return false;
 	}
 	
 	public Boolean estaPromocionada() {
-		return obtenerNotaFinal() >= 7 && verificarQueLasNotasSeanMayorOIgualAUnNumero(7);
+		if(obtenerNotaFinal() != null)
+			return (obtenerNotaFinal() >= 7 && verificarQueLasNotasSeanMayorOIgualAUnNumero(7)) 
+					|| (buscarNotaDeTipo(TipoDeNota.FINAL) != null && buscarNotaDeTipo(TipoDeNota.FINAL).getValor() >= 4);
+			
+		return false;
 	}
 	
 	public Boolean estaAprobada() {
-		return obtenerNotaFinal() >= 4;
+		if(obtenerNotaFinal() != null)
+			return obtenerNotaFinal() >= 4;
+			
+		return false;
 	}
 
 	private Boolean verificarQueLasNotasSeanMayorOIgualAUnNumero(Integer numero) {
@@ -66,30 +73,29 @@ public class Inscripcion {
 	}
 	
 	public Double obtenerNotaFinal() {
-		Double suma = 0.0;
+		Double acumuladorNotas = 0.0;
 		
-		if(!verificarQueLasNotasSeanMayorOIgualAUnNumero(4))
-			return 2.0;
-		
-		if(listaDeNotas.size() == 2) {
-			for (Nota nota : listaDeNotas) {
-				suma += nota.getValor();
-			}
+		if(buscarNotaDeTipo(TipoDeNota.FINAL) != null && verificarQueLasNotasSeanMayorOIgualAUnNumero(4)) {
+			return buscarNotaDeTipo(TipoDeNota.FINAL).getValor() * 1.0;
 		}
-		else if(listaDeNotas.size() == 3){
-			if(recuperatorioRendido() != null){
-				if(recuperatorioRendido().equals(TipoDeNota.RECUPERATORIO_PRIMER_PARCIAL)) {
-					suma += buscarNotaDeTipo(TipoDeNota.SEGUNDO_PARCIAL).getValor();
-					suma += buscarNotaDeTipo(TipoDeNota.RECUPERATORIO_PRIMER_PARCIAL).getValor();
-				}
-				else {
-					suma += buscarNotaDeTipo(TipoDeNota.PRIMER_PARCIAL).getValor();
-					suma += buscarNotaDeTipo(TipoDeNota.RECUPERATORIO_SEGUNDO_PARCIAL).getValor();
-				}
+		else if(verificarQueLasNotasSeanMayorOIgualAUnNumero(4)) {
+			
+			switch (listaDeNotas.size()) {
+				case 2:
+					for (Nota nota : listaDeNotas) {
+						acumuladorNotas += nota.getValor();
+					}
+					break;
+				case 3:
+					acumuladorNotas += buscarNotaDeTipo(recuperatorioRendido()).getValor();
+					acumuladorNotas += buscarNotaDeTipo(parcialValidoEnCasoDeHaberRendidoRecuperatorio()).getValor();
+					break;
 			}
+			
+			return acumuladorNotas / 2;
 		}
 		
-		return suma / 2;
+		return null;
 	}
 	
 	private TipoDeNota parcialValidoEnCasoDeHaberRendidoRecuperatorio() {
@@ -136,5 +142,4 @@ public class Inscripcion {
 	public int hashCode() {
 		return idInscripcion;
 	}
-
 }

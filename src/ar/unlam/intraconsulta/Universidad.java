@@ -1,6 +1,7 @@
 package ar.unlam.intraconsulta;
 
 import java.time.LocalDate;
+
 import java.util.ArrayList;
 
 public class Universidad {
@@ -387,6 +388,17 @@ public class Universidad {
 		
 		return true;
 	}
+	
+
+	public ArrayList<Materia> obtenerMateriasQueFaltanCursarParaUnAlumno(Integer dniAlumno) {
+		ArrayList<Materia> listaMateriasPorCursar = new ArrayList<Materia>();
+		ArrayList<Materia> listaMateriasAprobadas = obtenerMateriasAprobadasParaUnAlumno(dniAlumno);
+
+		listaMateriasPorCursar.addAll(listaMaterias);
+		listaMateriasPorCursar.removeAll(listaMateriasAprobadas);
+		
+		return listaMateriasPorCursar;
+	}
 
 	/*--------------------------------------------------PROFECOMISION--------------------------------------------------*/
 
@@ -507,5 +519,26 @@ public class Universidad {
 			return obtenerMateriasPromocionadasParaUnAlumno(dniAlumno).containsAll(listaCorrelativas);
 		
 		return true;
+	}
+	
+	public Double obtenerNota(Integer idComision, Integer dniAlumno) {
+		Inscripcion inscripcionBuscada = buscarInscripcion(dniAlumno, idComision);
+		
+		if(inscripcionBuscada != null)
+			return inscripcionBuscada.obtenerNotaFinal();
+		
+		return null;
+	}
+	
+	public Double obtenerPromedio(Integer dniAlumno) {
+		Double acumuladorNotas = 0.0;
+		Integer contadorNotas = 0;
+		
+		for (Inscripcion inscripcion : listaInscripciones) {
+			acumuladorNotas += obtenerNota(inscripcion.getComision().getId(), dniAlumno);
+			contadorNotas++;
+		}
+		
+		return acumuladorNotas / contadorNotas;
 	}
 }
