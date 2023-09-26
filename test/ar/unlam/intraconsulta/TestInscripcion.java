@@ -159,7 +159,7 @@ public class TestInscripcion {
 		
 		assertTrue(inscripcion.calificar(primerParcial, TipoDeNota.PRIMER_PARCIAL));
 		assertTrue(inscripcion.calificar(segundoParcial, TipoDeNota.SEGUNDO_PARCIAL));
-		assertEquals(2, inscripcion.obtenerNotaFinal(), 0.01);
+		assertNull(inscripcion.obtenerNotaFinal());
 		assertFalse(inscripcion.estaAprobada());
 		
 		assertTrue(inscripcion.calificar(recuperatorio, TipoDeNota.RECUPERATORIO_SEGUNDO_PARCIAL));

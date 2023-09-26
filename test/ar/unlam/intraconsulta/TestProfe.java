@@ -14,10 +14,10 @@ public class TestProfe {
 	}
 
 	@Test
-	public void queSePuedaCompararDosProfesoresPorNumeroDeLegajo() {
+	public void queSePuedaCompararDosProfesoresPorDni() {
 		Profesor profe1 = new Profesor(1, "Jose", "Gomez", 20111000);
 		Profesor profe2 = new Profesor(2, "Jose", "Gomez", 20111000);
 		
-		assertNotEquals(profe1, profe2);
+		assertEquals(profe1, profe2);
 	}
 }

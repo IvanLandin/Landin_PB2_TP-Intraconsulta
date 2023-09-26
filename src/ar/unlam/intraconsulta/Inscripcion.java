@@ -34,17 +34,23 @@ public class Inscripcion {
 	
 	public Boolean calificar(Integer valorNota, TipoDeNota tipoNota) {
 		
-		if((valorNota <= 10 && valorNota > 0) && (listaDeNotas.size() < 3 || tipoNota.equals(TipoDeNota.FINAL)) && buscarNotaDeTipo(tipoNota) == null)
+		if((valorNota <= 10 && valorNota > 0) 
+				&& (buscarNotaDeTipo(tipoNota) == null)
+				&& (listaDeNotas.size() < 3 || tipoNota.equals(TipoDeNota.FINAL))
+				&& (tipoNota.equals(TipoDeNota.FINAL) ? !estaPromocionada() : true)) {
+			
 			return listaDeNotas.add(new Nota(valorNota, tipoNota));
+		}
 		
 		return false;
 	}
 	
 	public Boolean estaPromocionada() {
-		if(obtenerNotaFinal() != null)
+		if(obtenerNotaFinal() != null) {
 			return (obtenerNotaFinal() >= 7 && verificarQueLasNotasSeanMayorOIgualAUnNumero(7)) 
 					|| (buscarNotaDeTipo(TipoDeNota.FINAL) != null && buscarNotaDeTipo(TipoDeNota.FINAL).getValor() >= 4);
-			
+		}
+		
 		return false;
 	}
 	
@@ -57,7 +63,7 @@ public class Inscripcion {
 
 	private Boolean verificarQueLasNotasSeanMayorOIgualAUnNumero(Integer numero) {
 		for (Nota nota : listaDeNotas) {
-			if(parcialValidoEnCasoDeHaberRendidoRecuperatorio() != null) {
+			if(recuperatorioRendido() != null) {//cambio
 				if((nota.getTipo().equals(parcialValidoEnCasoDeHaberRendidoRecuperatorio()) || nota.getTipo().equals(recuperatorioRendido())) && 
 					nota.getValor() < numero) {
 					return false;
