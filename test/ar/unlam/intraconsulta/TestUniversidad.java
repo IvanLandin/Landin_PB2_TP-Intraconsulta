@@ -591,6 +591,7 @@ public class TestUniversidad {
 		assertTrue(universidad.agregarMateria(materia));
 		assertTrue(universidad.agregarComision(comision));
 		assertTrue(universidad.agregarAlumno(alumno));
+		assertTrue(universidad.agregarAlumno(alumno2));
 		assertTrue(universidad.asignarAulaAComision(comision.getId(), aula.getNumeroAula()));
 		assertTrue(universidad.inscribirAlumnoAComision(alumno.getDni(), comision.getId()));
 		assertFalse(universidad.inscribirAlumnoAComision(alumno2.getDni(), comision.getId()));
@@ -1026,6 +1027,44 @@ public class TestUniversidad {
 				+ universidad.obtenerNota(comisionMateria.getId(), alumno.getDni())) / 3;
 		
 		assertEquals(valorEsperado, universidad.obtenerPromedio(alumno.getDni()), 0.01);
+	}
+	
+	@Test
+	public void queSePuedaObtenerElInformeDeNotasDeUnaComision() {
+		Universidad universidad = new Universidad("UNLaM");
+		CicloLectivo cicloLectivo = new CicloLectivo(universidad.getIdCicloLectivo(), LocalDate.of(2024, 1, 31),
+				LocalDate.of(2024, 3, 2), LocalDate.of(2023, 9, 18), LocalDate.of(2023, 12, 31));
+		Aula aula = new Aula(261, 50);
+		Materia materia = new Materia(universidad.getIdMateria(), 2619, "PB1");
+		Comision comision = new Comision(universidad.getIdComision(), materia, 2323, cicloLectivo, Turnos.MANIANA);
+		Alumno alumno1 = new Alumno(universidad.getIdAlumno(), "Juan", "Perez", 40123456, LocalDate.of(1997, 3, 20), LocalDate.of(2023, 1, 31));
+		Alumno alumno2 = new Alumno(universidad.getIdAlumno(), "Carla", "Rossi", 42548723, LocalDate.of(1999, 8, 15), LocalDate.of(2023, 1, 31));
+		
+		comision.asignarDiaDeCurso(DiasSemana.MARTES);
+		
+		assertTrue(universidad.agregarCicloLectivo(cicloLectivo));
+		assertTrue(universidad.agregarAula(aula));
+		assertTrue(universidad.agregarMateria(materia));
+		assertTrue(universidad.agregarComision(comision));
+		assertTrue(universidad.agregarAlumno(alumno1));
+		assertTrue(universidad.agregarAlumno(alumno2));
+		assertTrue(universidad.asignarAulaAComision(comision.getId(), aula.getNumeroAula()));
+		assertTrue(universidad.inscribirAlumnoAComision(alumno1.getDni(), comision.getId()));
+		assertTrue(universidad.inscribirAlumnoAComision(alumno2.getDni(), comision.getId()));
+		
+		assertTrue(universidad.registrarNota(comision.getId(), alumno1.getDni(), new Nota(7, TipoDeNota.PRIMER_PARCIAL)));
+		assertTrue(universidad.registrarNota(comision.getId(), alumno1.getDni(), new Nota(8, TipoDeNota.SEGUNDO_PARCIAL)));
+		
+		assertTrue(universidad.registrarNota(comision.getId(), alumno2.getDni(), new Nota(4, TipoDeNota.PRIMER_PARCIAL)));
+		assertTrue(universidad.registrarNota(comision.getId(), alumno2.getDni(), new Nota(8, TipoDeNota.SEGUNDO_PARCIAL)));
+		
+		ArrayList<String> informe = new ArrayList<String>();
+				
+		informe.add("Comision\tMateria\tDNI\tNombre\tApellido\tNota");
+		informe.add(comision.toString() + "\t" + materia.toString() + "\t" + alumno1.getDni() + "\t" + alumno1.getNombre() + "\t" + alumno1.getApellido() + "\t" + 7.5);
+		informe.add(comision.toString() + "\t" + materia.toString() + "\t" + alumno2.getDni() + "\t" + alumno2.getNombre() + "\t" + alumno2.getApellido() + "\t" + 6.0);
+				
+		assertEquals(informe, universidad.ObtenerReporteDeNotasDeAumnosDeCurso(comision.getId()));
 	}
 	
 	/*--------------------------------------------------PROFECOMISION--------------------------------------------------*/

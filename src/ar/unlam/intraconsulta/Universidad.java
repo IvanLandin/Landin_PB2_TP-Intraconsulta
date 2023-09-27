@@ -541,4 +541,20 @@ public class Universidad {
 		
 		return acumuladorNotas / contadorNotas;
 	}
+	
+	public ArrayList<String> ObtenerReporteDeNotasDeAumnosDeCurso(Integer idComision){
+		ArrayList<String> informe = new ArrayList<String>();
+		ArrayList<Inscripcion> alumnosDeComision = obtenerListaDeAlumnosDeUnaComision(idComision);
+		
+		informe.add("Comision\tMateria\tDNI\tNombre\tApellido\tNota");
+		
+		for (Inscripcion inscripcion : alumnosDeComision) {
+			String registro = inscripcion.getComision().toString() + "\t" + inscripcion.getComision().getMateriaComision().toString() + "\t" 
+					+ inscripcion.getAlumno().getDni() + "\t" + inscripcion.getAlumno().getNombre() + "\t" + inscripcion.getAlumno().getApellido() + "\t"
+					+ inscripcion.obtenerNotaFinal();
+			informe.add(registro);
+		}
+		
+		return informe;
+	}
 }
